@@ -15,19 +15,56 @@ A method that invokes itself is called {\bf recursive}.
 \label{recursion}
 
 \index{countdown}
+%slr:  11/17/19
+Consider the following iterative example from Section~\ref{The_while_statement}:
 
-Consider the following example:
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {Blastoff.java}
+public class Blastoff {
 
-\begin{code}
-public static void countdown(int n) {
-    if (n == 0) {
-        System.out.println("Blastoff!");
-    } else {
-        System.out.println(n);
-        countdown(n - 1);
+    public static void main(String[] args) {
+       int n = 3;
+       while (n > 0) {
+          System.out.println(n);
+          n = n - 1;
+       }
+       System.out.println("Blastoff!");
     }
 }
-\end{code}
+\end{trinket}
+
+We can rewrite this using \emph{recursion}.  In the following trinket, the method \java{countdown} calls \emph{itself}:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [280] {RecursiveBlastoff.java}
+public class RecursiveBlastoff {
+
+    public static void main(String[] args) {
+       countdown(3);
+    }
+    
+    public static void countdown(int n) {
+       if (n == 0) {  //'base case' - ends the sequence of recursive calls
+           System.out.println("Blastoff!");
+       } else {
+           System.out.println(n);
+           countdown(n - 1);
+       }
+    }
+}
+\end{trinket}
+
+%\begin{code}
+%public static void countdown(int n) {
+%    if (n == 0) {
+%        System.out.println("Blastoff!");
+%    } else {
+%        System.out.println(n);
+%        countdown(n - 1);
+%    }
+%}
+%\end{code}
+%slr: end 11/17/19
 
 The name of the method is \java{countdown}; it takes a single integer as a parameter.
 If the parameter is zero, it displays the word ``Blastoff''.
@@ -63,6 +100,10 @@ So the total output looks like:
 Blastoff!
 \end{stdout}
 
+%slr:  11/17/19
+The java classes (i.e. programs) \java{Blastoff} and \java{RecursiveBlastoff} produce the same result, but with very different strategies.  It can be shown that any iterative algorithm can be written as a recursive one and conversely.  In practice, some tasks can be performed much more easily with one scheme than the other.
+%slr: end 11/17/19
+
 As a second example, we'll rewrite the methods \java{newLine} and \java{threeLine} from Section~\ref{adding_methods}.
 Here they are again:
 
@@ -81,22 +122,65 @@ public static void threeLine() {
 \index{newline}
 
 Although these methods work, they would not help if we wanted to display two newlines, or maybe 100.
-A more general alternative would be:
+A more general \textbf{iterative} alternative would be:
 
 \begin{code}
 public static void nLines(int n) {
-    if (n > 0) {
-        System.out.println();
-        nLines(n - 1);
+    for(int i = 0; i < n; i++) {
+       System.out.println();
     }
 }
 \end{code}
 
-This method takes an integer, \java{n}, as a parameter and displays \java{n} newlines.
-The structure is similar to \java{countdown}.
+And a more general \textbf{recursive} alternative would be:
+
+\begin{code}
+public static void nLines(int n) {
+    if (n == 0) { //'base case' - ends the sequence of recursive calls
+       return;  
+    } else {
+       System.out.println();
+       nLines(n - 1);
+    }
+}
+\end{code}
+
+This recursive method takes an integer, \java{n}, as a parameter and displays \java{n} newlines.
+The structure is similar to the \java{countdown} method in class RecursiveCountdown above.
 As long as $n$ is greater than zero, it displays a newline and then invokes itself to display $(n-1)$ additional newlines.
 The total number of newlines is $1 + (n - 1)$, which is just what we wanted: $n$.
 
+%slr: 11/17/19
+Here is a complete Java trinket class:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [300] {RecursiveNewLines.java}
+public class RecursiveNewLines {
+
+    public static void main(String[] args) {
+       System.out.println("Here come 3 newlines:");
+       nLines(3);
+       System.out.println("Goodbye!");
+    }
+    
+    public static void nLines(int n) {
+       if (n == 0) {  //'base case' - ends the sequence of recursive calls
+          return;  
+       } else {
+          System.out.println();
+          nLines(n - 1);
+       }
+    }
+}
+\end{trinket}
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket so that it prints a character (perhaps a period or an asterisk) on each of the newlines.
+\item Modify the trinket so that it produces the same output, but with base case condition \java{n == 1} instead of \java{n == 0}.
+\end{enumerate}
+
+%slr:  end 11/17/19
 
 \section{Recursive Stack Diagrams}
 
@@ -135,19 +219,39 @@ If there is no base case in a recursive method, or if the base case is never rea
 In practice, the size of the stack is limited.
 If you exceed the limit, you get a \java{StackOverflowError}.
 
-For example, here is a recursive method without a base case:
+For example, here is an example of a recursive method without a base case:
+%slr:  11/17/19
+%\begin{code}
+%public static void forever(String s) {
+%    System.out.println(s);
+%    forever(s);
+%}
+%\end{code}
 
-\begin{code}
-public static void forever(String s) {
-    System.out.println(s);
-    forever(s);
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {InfiniteRecursiveMethod.java}
+public class InfiniteRecursiveMethod {
+
+    public static void main(String[] args) {
+       forever("and again,");
+    }
+    
+    public static void forever(String s) {
+       System.out.println(s);
+       forever(s);
+    }
 }
-\end{code}
+\end{trinket}
 
 \index{call stack}
 
-This method displays the given string until the stack overflows, at which point it throws an error.
-Try this example on your computer---you might be surprised by how long the error message is!
+Run the program and see what happens. This recursive method repeatedly displays the given string since there is no base case ending the recursion - an infinite recursion.  The program does terminate, however, when the stack overflows and an exception is thrown.
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket so that it is no longer infinite.
+\end{enumerate}
+%slr:  end 11/17/19
 
 
 \section{Value-Returning Methods}
@@ -164,7 +268,7 @@ Try this example on your computer---you might be surprised by how long the error
 %This idea was developed by Alonzo Church and Alan Turing, so it is known as the Church-Turing thesis.
 %You can read more about it at \url{https://en.wikipedia.org/wiki/Turing_thesis}.
 
-To give you an idea of what you can do with the tools we have learned, let's look at methods that evaluate recursively-defined mathematical functions.
+To give you an idea of what you can do with the tools we have learned, let's look at methods that evaluate recursively-defined mathematical functions which therefor return a value.
 
 A recursive definition is similar to a ``circular'' definition, in the sense that the definition refers to the thing being defined.
 Of course, a truly circular definition is not very useful:
@@ -186,7 +290,7 @@ Many mathematical functions are defined recursively, because that is often the s
 For example, the {\bf factorial} of an integer $n$, which is written $n!$, is defined like this:
 %
 \begin{eqnarray*}
-&&  0! = 1 \\
+&&  0! = 1 \\ 
 &&  n! = n \cdot(n-1)!
 \end{eqnarray*}
 %
@@ -214,8 +318,9 @@ If the argument happens to be zero, we return 1.
 public static int factorial(int n) {
     if (n == 0) {
         return 1;
+    } else {
+        return 0;  // stub
     }
-    return 0;  // stub
 }
 \end{code}
 
@@ -224,16 +329,41 @@ Otherwise, and this is the interesting part, we have to make a recursive call to
 \begin{code}
 public static int factorial(int n) {
     if (n == 0) {
-        return 1;
+        return 1; //base case
+    } else {
+        int recurse = factorial(n - 1);
+        int result = n * recurse;
+        return result;
     }
-    int recurse = factorial(n - 1);
-    int result = n * recurse;
-    return result;
 }
 \end{code}
 
-To illustrate what is happening, we'll use the temporary variables \java{recurse} and \java{result}.
+To illustrate what is happening, we use the temporary variables \java{recurse} and \java{result}.
 In each method call, \java{recurse} stores the factorial of $n - 1$, and \java{result} stores the factorial of $n$.
+
+%slr:  11/19/19
+The trinket below is a complete, executable program illustrating a recursive algorithm for computing 3!:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [280] {RecursiveFactorial.java}
+public class RecursiveFactorial {
+
+    public static void main(String[] args) {
+       System.out.println("3! = " + factorial(3));
+    }
+    
+    public static int factorial(int n) {
+       if (n == 0) {
+          return 1; //base case
+       } else {
+          int recurse = factorial(n - 1);
+          int result = n * recurse;
+          return result;
+       }
+    }
+}
+\end{trinket}
+%slr:  end 11/19/19
 
 The flow of execution for this program is similar to \java{countdown} from Section~\ref{recursion}.
 If we invoke \java{factorial} with the value 3:
@@ -273,44 +403,47 @@ Notice that \java{recurse} and \java{result} do not exist in the last frame, bec
 \end{figure}
 
 
-\section{The Leap of Faith}
-\label{leap_of_faith}
-
-\index{leap of faith}
-
-Following the flow of execution is one way to read programs, but it can quickly become overwhelming.
-Another way to understand recursion is the {\bf leap of faith}:
-when you come to a method invocation, instead of following the flow of execution, you {\em assume} that the method works correctly and returns the appropriate value.
-
-In fact, you are already practicing this leap of faith when you use methods in the Java library.
-When you invoke \java{Math.cos} or \java{System.out.println}, you don't think about the implementations of those methods.
-You just assume that they work properly.
-
-The same is true of other methods.
-For example, consider the method from Section~\ref{boolmeth} that determines whether an integer has only one digit:
-
-\begin{code}
-public static boolean isSingleDigit(int x) {
-    return x > -10 && x < 10;
-}
-\end{code}
-
-Once you convince yourself that this method is correct---by examining and testing the code---you can just use the method without ever looking at the implementation again.
-
-Recursive methods are no different.
-When you get to a recursive call, don't think about the flow of execution.
-Instead, {\em assume} that the recursive call produces the desired result.
-
-For example, ``Assuming that I can find the factorial of $n-1$, can I compute the factorial of $n$?''
-Yes you can, by multiplying by $n$.
-Here's an implementation of \java{factorial} with the temporary variables removed:
+%slr:  11/21/19 omit leap of faith section - incorporate into previous section
+%\section{The Leap of Faith}
+%\label{leap_of_faith}
+%
+%\index{leap of faith}
+%
+%Following the flow of execution is one way to read programs, but it can quickly become overwhelming.
+%Another way to understand recursion is the {\bf leap of faith}:
+%when you come to a method invocation, instead of following the flow of execution, you {\em assume} that the method works correctly and returns the appropriate value.
+%
+%In fact, you are already practicing this leap of faith when you use methods in the Java library.
+%When you invoke \java{Math.cos} or \java{System.out.println}, you don't think about the implementations of those methods.
+%You just assume that they work properly.
+%
+%The same is true of other methods.
+%For example, consider the method from Section~\ref{boolmeth} that determines whether an integer has only one digit:
+%
+%\begin{code}
+%public static boolean isSingleDigit(int x) {
+%    return x > -10 && x < 10;
+%}
+%\end{code}
+%
+%Once you convince yourself that this method is correct---by examining and testing the code---you can just use the method without ever looking at the implementation again.
+%
+%Recursive methods are no different.
+%When you get to a recursive call, don't think about the flow of execution.
+%Instead, {\em assume} that the recursive call produces the desired result.
+%
+%For example, ``Assuming that I can find the factorial of $n-1$, can I compute the factorial of $n$?''
+%Yes you can, by multiplying by $n$.
+%slr:  end 11/21/19 omit leap of faith section
+Here's an implementation of \java{factorial} without use of the temporary variables \java{recurse} and \java{result}:
 
 \begin{code}
 public static int factorial(int n) {
     if (n == 0) {
         return 1;
+    } else {
+       return n * factorial(n - 1);
     }
-    return n * factorial(n - 1);
 }
 \end{code}
 
@@ -322,16 +455,17 @@ Notice how similar this version is to the original mathematical definition:
 &&  n! = n \cdot(n-1)!
 \end{eqnarray*}
 %
-Of course, it is strange to assume that the method works correctly when you have not finished writing it.
-But that's why it's called a leap of faith!
+%Of course, it is strange to assume that the method works correctly when you have not finished writing it.
+%But that's why it's called a leap of faith!
 
+Following the flow of execution of a recursive method is one way to understand it, but this can become overwhelming.  Another way to understand a recursive method is to read and understand it the same way we read the recursive definition itself.
 
 %\section{Fibonacci Sequence}
 \label{fibonacci}
 
 \index{fibonacci}
 
-Another common recursively-defined mathematical function is the Fibonacci sequence, which has the following definition:
+As another example consider the recursively-defined Fibonacci sequence, a function which has the following definition:
 %
 \begin{eqnarray*}
 && fibonacci(1) = 1 \\
@@ -339,38 +473,105 @@ Another common recursively-defined mathematical function is the Fibonacci sequen
 && fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)
 \end{eqnarray*}
 %
-Notice that each Fibonacci number is the sum of the two preceding Fibonacci numbers.
-Translated into Java, this function is:
+
+Notice that each Fibonacci number is the sum of the two preceding Fibonacci numbers.  Thus the terms of the sequence are: 1, 1, 2, 3, 5, 8, 13, 21, ...
+
+We see from the definition of the Fibonacci sequence that the \textbf{base case} is evaluating the function at \java{1} or at \java{2}:
+
+\begin{code}
+public static int fibonnacci(int n) {
+   if (n == 1 || n == 2) {
+      return 1;  //base case(s)
+   } else {
+      return 0;  //stub for recursive case
+   }
+}
+\end{code}
+
+What about the recursive case?  If n neither 1 nor 2, we want to invoke the recursive method \textbf{twice}, once at \java{n-1} and once at \java{n-2} and add the results per the definition above.  Translated into Java, this function is:
 
 \begin{code}
 public static int fibonacci(int n) {
     if (n == 1 || n == 2) {
         return 1;
+    } else {
+       return fibonacci(n - 1) + fibonacci(n - 2);
     }
-    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 \end{code}
 
-If you try to follow the flow of execution here, even for small values of \java{n}, your head will explode.
-But if we take a leap of faith and assume that the two recursive invocations work correctly, then it is clear, looking at the definition, that our implementation is correct.
+If you try to follow the flow of execution here, even for small values of \java{n}, your head will explode.  Each call to the method \java{fibonacci} may result in \textbf{two more} invocations of \java{fibonacci}!
+But it is clear, looking at the definition, that our implementation is correct once we understand recursive method calls.
+
+Here is a complete trinket implentation for computing a term of the Fibonacci sequence:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [270] {Fibonacci.java}
+public class Fibonacci {
+
+    public static void main(String[] args) {
+       System.out.printf("5th term of the Fibonacci sequence is %d\n", fibonacci(5));
+    }
+    
+    public static int fibonacci(int n) {
+       if (n == 1 || n == 2) {
+          return 1; //base case
+       } else {
+          return fibonacci(n-1) + fibonacci(n-2);
+       }
+    }
+}
+\end{trinket}
+
+Run the trinket and see what you get.
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket above containing the class \java{RecursiveFactorial} so that it in no longer uses the temporary variables \java{recurse} and \java{result}.  Verify that it works correctly.
+\item Modify the trinket above containing the class \java{Fibonacci} to compute and display the first 10 terms of the sequence.
+\item Modify the trinket above containing the class \java{Fibonacci} to compute the 50th term of the sequence.  (Be patient!)  What happens?  Why?
+\item Modify the trinket above containing the class \java{Fibonacci} to compute the term \textit{iteratively} rather than \textit{recursively}.
+\end{enumerate}
+
 
 
 \section{Counting Up Recursively}
 \label{countup}
 
 The \java{countdown} example in Section~\ref{recursion} has three parts: (1) it checks the base case, (2) it displays something, and (3) it makes a recursive call.
-What do you think happens if you reverse steps (2) and (3), making the recursive call {\em before} displaying?
+What do you think happens if you reverse steps (2) and (3), making the recursive call {\em before} displaying?  Run the trinket below and see:
 
-\begin{code}
-public static void countup(int n) {
-    if (n == 0) {
-        System.out.println("Blastoff!");
-    } else {
-        countup(n - 1);
-        System.out.println(n);
+%slr:  11/22/19
+% height = 130 + 11 * num_lines
+\begin{trinket} [280] {CountUp.java}
+public class CountUp {
+
+    public static void main(String[] args) {
+       countup(3);
+    }
+    
+    public static void countup(int n) {
+        if (n == 0) {
+            System.out.println("Blastoff!");
+        } else {
+            countup(n - 1);
+            System.out.println(n);
+        }
     }
 }
-\end{code}
+\end{trinket}
+
+%\begin{code}
+%public static void countup(int n) {
+%    if (n == 0) {
+%        System.out.println("Blastoff!");
+%    } else {
+%        countup(n - 1);
+%        System.out.println(n);
+%    }
+%}
+%\end{code}
+%slr:  end 11/22/19
 
 The stack diagram is the same as before, and the method is still called $n$ times.
 But now the \java{System.out.println} happens just before each recursive call returns.
@@ -497,16 +698,30 @@ Now, to display a number in binary we can combine the algorithm from the previou
 
 Here is a recursive method that displays any positive integer in binary:
 
+%slr:  11/22/19
 \begin{code}
 public static void displayBinary(int value) {
-    if (value > 0) {
-        displayBinary(value / 2);
-        System.out.print(value % 2);
+    if (value == 0) {
+       return;  //base case
+    } else {
+       displayBinary(value / 2); //recursive call
+       System.out.print(value % 2); //print afterwards
     }
 }
 \end{code}
 
-If \java{value} is zero, \java{displayBinary} does nothing (that's the base case).
+Here is a shorter version of the method that is equivalent:
+
+\begin{code}
+public static void displayBinary(int value) {
+    if (value > 0) {
+       displayBinary(value / 2); //recursive call
+       System.out.print(value % 2); //print afterwards
+    }
+}
+\end{code}
+
+If \java{value} is zero, this shorter version of \java{displayBinary} does nothing (that's the base case).
 If the argument is positive, the method divides it by two and calls \java{displayBinary} recursively.
 When the recursive call returns, the method displays one digit of the result and returns (again).
 Figure~\ref{fig.stack4} illustrates this process.
@@ -524,15 +739,34 @@ Figure~\ref{fig.stack4} illustrates this process.
 
 The leftmost digit is near the bottom of the stack, so it gets displayed first.
 The rightmost digit, near the top of the stack, gets displayed last.
-After invoking \java{displayBinary}, we use \java{println} to complete the output.
+%slr:  11/22/19
+After invoking \java{displayBinary}, we use \java{println} to complete the output as shown in the trinket below:
 
-\begin{code}
-displayBinary(23);      // output is 10111
-System.out.println();
-\end{code}
+%\begin{code}
+%displayBinary(23);      // output is 10111
+%System.out.println();
+%\end{code}
+% height = 130 + 11 * num_lines
+\begin{trinket} [270] {Binary.java}
+public class Binary {
 
+    public static void main(String[] args) {
+       displayBinary(23);
+       System.out.println();
+    }
+    
+    public static void displayBinary(int value) {
+        if (value > 0) {
+           displayBinary(value / 2); //recursive call
+           System.out.print(value % 2); //print afterwards
+        }
+    }
+}
+\end{trinket}
 
-\section{CodingBat Problems}
+Run the trinket to verify we obtain the result \java{10111}.
+
+\section{Two Recursion Examples (from CodingBat)}
 
 In the past several chapters you've seen methods, conditions, loops, strings, arrays, and recursion.
 A great resource for practicing all of these concepts is \url{https://codingbat.com/}.
@@ -551,7 +785,7 @@ The first problem is available at \url{https://codingbat.com/prob/p118230}:
 \begin{quote}
 \textbf{Recursion-1 ~noX}
 
-Given a string, compute recursively a new string where all the \java{'x'} chars have been removed.
+Given a string, recursively compute a new string where all the \java{'x'} chars have been removed.
 
 \ttfamily
 noX("xaxb") $\rightarrow$ "ab" \\
@@ -577,7 +811,7 @@ Next comes the more difficult part.
 To solve a problem recursively, you need to think of a simpler instance of the same problem.
 For \java{noX}, it's removing all the {\tt x}'s from a shorter string.
 
-So let's split the string into two parts, the first letter and the rest.
+So let's split the string into two parts, the first letter and the rest. Since we know the string has length greater than 0, we are assured we can do this:
 
 \begin{code}
 char first = str.charAt(0);
@@ -590,7 +824,9 @@ Now we can make a recursive call to remove the {\tt x}'s from {\tt rest}:
 String recurse = noX(rest);
 \end{code}
 
-If {\tt first} happens to be an {\tt x}, we're done; we just have to return {\tt recurse}.  Otherwise, we have to concatenate {\tt first} and {\tt recurse}.  Here's the {\tt if} statement we need.
+That takes care of {\tt rest} and places the result into {\tt recurse},
+
+To take care of {\tt first} we have two possibilities: if it happens to be an {\tt x}, we're done; we just have to return {\tt recurse}.  Otherwise, we have to concatenate {\tt first} and {\tt recurse}.  Here's the {\tt if} statement we need.
 
 \begin{code}
 if (first == 'x') {
@@ -600,7 +836,30 @@ if (first == 'x') {
 }
 \end{code}
 
-You can run this solution on CodingBat by pasting these snippets into the provided method definition.
+%slr:  11/22/19
+%You can run this solution on CodingBat by pasting these snippets into the provided method definition.
+Here is a complete Java class trinket with a stubbed version of the method \java{noX()}:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [270] {NoX.java}
+public class NoX {
+
+    public static void main(String[] args) {
+       String s = noX("xaxb");
+       System.out.println(s);
+    }
+    
+    public static String noX(String str) {
+        if (str.length() == 0) {
+           return ""; //empty String
+        } else {
+           return ""; //stub for recursive case
+        }
+    }
+}
+\end{trinket}
+
+Complete the implementation of the \java{noX()} method and test your code.  This is section exercise 1 below.
 
 The second problem is available at \url{https://codingbat.com/prob/p135988}:
 
@@ -615,30 +874,55 @@ array11([11, 11], 0) $\rightarrow$ 2 \\
 array11([1, 2, 3, 4], 0) $\rightarrow$ 0
 \end{quote}
 
-This problem uses the convention of passing the index as an argument.
-So the base case is when we've reached the end of the array.
-At that point, we know there are no more {\tt 11}'s.
+This problem uses the convention of passing the index as an argument.  In this way, we can pass the entire array and the index in each recursive call instead of computing and passing a subarray. 
+
+The base case is when we've reached the end of the array.  At that point, we know there are no more {\tt 11}'s.
 
 \begin{code}
-if (index >= nums.length) {
+if (index >= nums.length) {  //at the end of the array
     return 0;
 }
 \end{code}
 
-Next we look at the current number (based on the given index), and check if it's an {\tt 11}.
+Next we look at the current array element (based on the given index), and check if it's an {\tt 11}.
 After that, we can recursively check the rest of the array.
-Similar to the noX problem, we look at only one integer per method call.
+Similar to the noX problem, we look at only one array entry per method call.
 
 \begin{code}
-int recurse = array11(nums, index + 1);
+int recurse = array11(nums, index + 1);  //recursive call with rest of array
 if (nums[index] == 11) {
-    return recurse + 1;
+    return recurse + 1;  //increment the count of 11s
 } else {
     return recurse;
 }
 \end{code}
 
-Again, you can run this solutions on CodingBat by pasting the snippets into the method definition.
+%slr:  11/22/19
+%Again, you can run this solutions on CodingBat by pasting the snippets into the method definition.
+Here is a complete Java class trinket with a stubbed version of the method \java{array11()}:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [290] {Elevens.java}
+public class Elevens {
+
+    public static void main(String[] args) {
+       int a = {0, 23, -4, 11, 1, 11, 35};  
+       int numElevens = array11(a, 0);    
+       System.out.printf("There are %d elevens in the array\n", numElevens);
+    }
+    
+    public static int array11(int[] nums, int index) {
+        if (index >= nums.length) {
+           return 0; //empty String
+        } else {
+           return 0; //stub for recursive case
+        }
+    }
+}
+\end{trinket}
+
+Complete the implementation of the \java{array11()} method and test your code.  This is section exercise 2 below.
+%slr:  end 11/22/19
 
 \index{Java Tutor}
 
@@ -648,6 +932,11 @@ Then try solving other CodingBat problems on your own.
 Learning to think recursively is an important part of learning to think like a computer scientist.
 Many algorithms can be written concisely with recursive methods that perform computations on the way down, on the way up, or both.
 
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Complete the implementation of the recursive method in the trinket above containing the class \java{NoX}.  Verify that it works correctly.
+\item Complete the implementation of the recursive method in the trinket above containing the class \java{Elevens}.  Verify that it works correctly.
+\end{enumerate}
 
 \section{Vocabulary}
 
@@ -677,8 +966,8 @@ A condition that causes a recursive method {\em not} to make another recursive c
 \term{factorial}
 The product of all the integers up to and including a given integer.
 
-\term{leap of faith}
-A way to read recursive programs by assuming that the recursive call works, rather than following the flow of execution.
+%\term{leap of faith}
+%A way to read recursive programs by assuming that the recursive call works, rather than following the flow of execution.
 
 \term{binary}
 A system that uses only zeros and ones to represent numbers.

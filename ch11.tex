@@ -33,7 +33,11 @@ In this chapter, you will learn to design classes that represent {\em useful} ob
 
 \end{itemize}
 
-Think of a class like a blueprint for a house: you can use the same blueprint to build any number of houses.
+
+Think of a class like a blueprint for a house: you can use the same blueprint to build any number of houses.  
+%slr: 12-25-19
+The individual houses are objects; the blueprint is the class.
+%slr: end 12-25-19
 
 \section{The Time Class}
 
@@ -177,6 +181,41 @@ Doing so causes an infinite recursion, since \java{new} invokes the {\em same} c
 %If you don't provide a constructor for a class, Java will generate one for you automatically.
 %The default constructor takes no arguments and initializes all attributes to zero (or an equivalent value like \java{false} or \java{null}).
 
+%slr: 12-25-19
+Here is a trinket implemetation of what we have so far:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [330] {Time.java}
+public class Time {
+    //class attributes
+    private int hour;
+    private int minute;
+    private double second;
+    
+    //default constructor
+    public Time() {
+       this.hour = 0;
+       this.minute = 0;
+       this.second = 0.0;
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Time time = new Time();
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Does the above trinket \java{Time} compile successfully?
+\item Does the above trinket \java{Time} run successfully?  If so, what is the output?
+\item Modify the the above trinket \java{Time} so as to print out object \java{time}'s \java{hour} instance variable.  What do you get?  Why?
+\item What small change to the delaration of the class attribute \java{hour} can you make to deal with the error above?  Make it and see what happens.
+\end{enumerate}
+%slr: end 12-25-19
 
 \section{Value Constructors}
 
@@ -247,11 +286,50 @@ This situation is called {\bf shadowing}, because the parameter ``hides'' the in
 Java provides the keyword \java{this} so you can access instance variables, regardless of shadowing.
 As a result, this constructor copies the values from the parameters to the instance variables.
 
+%slr: 12-25-19
+Here is a trinket implemetation of what we have now:
+% height = 130 + 11 * num_lines
+\begin{trinket} [430] {Time.java}
+public class Time {
+    //class attributes
+    private int hour;
+    private int minute;
+    private double second;
+    
+    //default constructor
+    public Time() {
+       this.hour = 0;
+       this.minute = 0;
+       this.second = 0.0;
+    }
+    
+    //value constructor
+    public Time(int hour, int minute, double second) {
+       this.hour = hour;
+       this.minute = minute;
+       this.second = second;
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Time time = new Time();
+       Time time2 = new Time(10, 30, 0);
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.  
+
+%slr: end 12-25-19
+
 
 \section{Getters and Setters}
 
 Recall that the instance variables of \java{Time} are \java{private}.
 We can access them from within the \java{Time} class, but if we try to read or write them from another class, the compiler reports an error.
+%slr: 12-25-19
+This is what we have seen in the trinkets above.
+%slr: end 12-25-19
 
 \index{private}
 \index{variable!private}
@@ -277,6 +355,9 @@ There are three ways to solve this problem:
 \begin{itemize}
 
 \item We could make the instance variables public.
+%slr: 12-25-19 
+We tried this in the section exercises.
+%slr: end 12-25-19
 
 \item We could provide methods to access the instance variables.
 
@@ -326,7 +407,58 @@ We can fix the compiler error in \java{TimeClient} by using the getter:
 System.out.println(time.getHour());
 \end{code}
 
-If we decide that \java{TimeClient} should also be able to modify the instance variables of \java{Time}, we can provide methods to do that, too:
+%slr: 12-25-19
+Here is a trinket implemetation with getters, showing their use in \java{main}:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [600] {Time.java}
+public class Time {
+    //class attributes
+    private int hour;
+    private int minute;
+    private double second;
+    
+    //default constructor
+    public Time() {
+       this.hour = 0;
+       this.minute = 0;
+       this.second = 0.0;
+    }
+    
+    //value constructor
+    public Time(int hour, int minute, double second) {
+       this.hour = hour;
+       this.minute = minute;
+       this.second = second;
+    }
+    
+    //getters
+    public int getHour() {
+       return this.hour;
+    }
+
+    public int getMinute() {
+      return this.minute;
+    }
+
+    public double getSecond() {
+       return this.second;
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Time time = new Time(11, 59, 59.9);
+       int hour = time.getHour();
+       System.out.println("time's hour instance variable has value: " + hour);
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.  
+
+%slr: end 12-25-19
+
+If we decide that \java{TimeClient} should also be able to \textit{modify} the instance variables of \java{Time}, we can provide methods to do that, too:
 
 \begin{code}
 public void setHour(int hour) {
@@ -354,6 +486,13 @@ Writing getters and setters can get boring, but many IDEs can generate them for 
 
 % NOTE: A thougtful reader might ask a question we don't answer here: if we provide getters and setters, why don't we just make the instance variables public? 
 
+%slr: 12-25-19
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the the above trinket \java{Time} so as to print out object \java{time}'s \java{minute} and \java{second} instance variables in a nicely formatted way.
+\item Modify the the above trinket \java{Time} adding the mutators (or setters) for each instance variable.  Then modify object \java{time}'s \java{hour}, \java{minute} and \java{second} instance variables and print them out, as in exercise 1, to see the results.
+\end{enumerate}
+%slr: end 12-25-19
 
 \section{Displaying Objects}
 
@@ -387,6 +526,63 @@ public static void printTime(Time t) {
 As a reminder, you need to use \java{\%d} with integers and \java{\%f} with floating-point numbers.
 The \java{02} option means ``total width 2, with leading zeros if necessary'', and the \java{04.1} option means ``total width 4, one digit after the decimal point, leading zeros if necessary''.
 The output is the same: {\tt 11:59:59.9}.
+
+%slr: 12-25-19
+Here is a trinket implemetation which provides the \java{printTime} method and invokes it in \java{main}:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [680] {Time.java}
+public class Time {
+    //class attributes
+    private int hour;
+    private int minute;
+    private double second;
+    
+    //default constructor
+    public Time() {
+       this.hour = 0;
+       this.minute = 0;
+       this.second = 0.0;
+    }
+    
+    //value constructor
+    public Time(int hour, int minute, double second) {
+       this.hour = hour;
+       this.minute = minute;
+       this.second = second;
+    }
+    
+    //getters
+    public int getHour() {
+       return this.hour;
+    }
+
+    public int getMinute() {
+      return this.minute;
+    }
+
+    public double getSecond() {
+       return this.second;
+    }
+    
+    //static method for printing a nicely formatted Time ojects
+    public static void printTime(Time t) {
+       System.out.printf("%02d:%02d:%04.1f\n",
+           t.hour, t.minute, t.second);
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Time time = new Time(11, 59, 59.9);
+       //print out time using the new method
+       printTime(time);
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.  
+
+%slr: end 12-25-19
 
 There's nothing wrong with a method like \java{printTime}, but it is not consistent with object-oriented style.
 A more idiomatic solution is to provide a special method called \java{toString}.
@@ -467,13 +663,70 @@ The value of \java{s} is the \java{String} \java{"11:59:59.9"}.
 
 You can also invoke \java{toString} indirectly by invoking \java{print} or \java{println}:
 
+%slr: 12-15-19
 \begin{code}
 System.out.println(time);
 \end{code}
 
-This code displays the \java{String} \java{"11:59:59.9"}. 
+%This code displays the \java{String} \java{"11:59:59.9"}. 
 
 Either way, when you use \java{this} inside \java{toString}, it refers to the same object as \java{time}.
+
+Here is a trinket implemetation which provides the \java{toString} method and invokes it implicitly as in the code example immediately above:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [680] {Time.java}
+public class Time {
+    //class attributes
+    private int hour;
+    private int minute;
+    private double second;
+    
+    //default constructor
+    public Time() {
+       this.hour = 0;
+       this.minute = 0;
+       this.second = 0.0;
+    }
+    
+    //value constructor
+    public Time(int hour, int minute, double second) {
+       this.hour = hour;
+       this.minute = minute;
+       this.second = second;
+    }
+    
+    //getters
+    public int getHour() {
+       return this.hour;
+    }
+
+    public int getMinute() {
+      return this.minute;
+    }
+
+    public double getSecond() {
+       return this.second;
+    }
+    
+    //toString method
+    public String toString() {
+       return String.format("%02d:%02d:%04.1f\n",
+        this.hour, this.minute, this.second);
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Time time = new Time(11, 59, 59.9);
+       //print out time using the new method
+       System.out.println(time);
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.  
+
+%slr: end 12-25-19
 
 
 \section{The equals Method}
@@ -579,6 +832,12 @@ But other definitions are possible.
 %The \java{equals} method is now overloaded.
 %If we invoke \java{time1.equals(time3)}, the first method will be used; \java{time1.equals("09:30:00.0")} uses the second.
 
+%slr: 12-25-19
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the above trinket \java{Time} (with the \java{toString} method) to include an \java{equals} method as described in this section.  Write statements in \java{main} to test your equals method and contrast it with the result of the \java{==} operator as shown in this section.
+\end{enumerate}
+%slr: end 12-25-19
 
 \section{Adding Times}
 \label{addingtime}
@@ -703,6 +962,13 @@ If \java{hour} exceeds 23, we subtract 24 hours, but there's no
 \java{days} attribute to carry into.
 
 
+%slr: 12-25-19
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Further modify the above trinket \java{Time} to which you added an \java{equals} method to now include the 'better' \java{add} \textbf{instance} method from the code example immediately above.  Write statements in \java{main} to test your new \java{add} method.
+\end{enumerate}
+%slr: end 12-25-19
+
 \section{Vocabulary}
 
 \begin{description}
@@ -763,15 +1029,16 @@ The code for this chapter is in the {\tt ch11} directory of {\tt ThinkJavaCode2}
 See page~\pageref{code} for instructions on how to download the repository.
 Before you start the exercises, we recommend that you compile and run the examples.
 
-
-\begin{exercise}  %%V6 Ex11.2
-
-The implementation of \java{increment} in this chapter is not very efficient.
-Can you rewrite it so it doesn't use any loops?
-
-{\it Hint:} Remember the remainder operator. And yes, it works with floating-point values too.
-
-\end{exercise}
+%slr:  12-25-19
+%\begin{exercise}  %%V6 Ex11.2
+%
+%The implementation of \java{increment} in this chapter is not very efficient.
+%Can you rewrite it so it doesn't use any loops?
+%
+%{\it Hint:} Remember the remainder operator. And yes, it works with floating-point values too.
+%
+%\end{exercise}
+%slr: end 12-25-19
 
 
 \begin{exercise}  %%V6 Ex11.3

@@ -1,15 +1,15 @@
-\chapter{Variables and Operators}
+\chapter{Variables and operators}
 
 This chapter describes how to write statements using {\em variables}, which store values like numbers and words, and {\em operators}, which are symbols that perform a computation.
 We also explain three kinds of programming errors and offer additional debugging advice.
 %Understanding what can go wrong will help you get it right.
 %Finally we discuss the rules of code style, which helps make programs easier to read and debug.
 
-To run the examples in this chapter, you will need to create a new Java class with a \java{main} method (see Section~\ref{hello}).
-Throughout the book, we often omit class and method definitions to keep the examples concise.
+%To run the examples in this chapter, you will need to create a new Java class with a \java{main} method (see Section~\ref{hello}).
+%We often omit the class and method definitions to keep the examples concise.
 
 
-\section{Declaring Variables}
+\section{Declaring variables}
 
 %NOTE: in response to review comments, I am cleaning up the use of
 % ``memory''.  I would like to avoid talking about hardware, or being
@@ -39,9 +39,9 @@ String message;
 \index{type!char}
 \index{type!String}
 
-This statement is called a {\bf declaration}, because it declares that the variable \java{message} has the type \java{String}.
+This statement is called a {\bf declaration}, because it declares that the variable named \java{message} has the type \java{String}.
 Each variable has a {\bf type} that determines what kind of values it can store.
-For example, the \java{int} type can store integers like \java{1} and \java{-5}, and the \java{char} type can store characters like \java{'A'} and \java{'z'}.
+For example, the \java{int} type can store integers, and the \java{char} type can store characters.
 
 Some types begin with a capital letter and some with lowercase.
 We will learn the significance of this distinction later, but for now you should take care to get it right.
@@ -58,15 +58,21 @@ Note that \java{x} is an arbitrary name for the variable.
 In general, you should use names that indicate what the variables mean.
 %For example, if you saw these declarations, you could probably guess what values would be stored:
 
-\begin{code}
-String firstName;
-String lastName;
-int hour, minute;
-\end{code}
 
-This example declares two variables with type \java{String} and two with type \java{int}.
+The program below declares two variables with type \java{String} and two with type \java{int}.
 The last line shows how to declare multiple variables with the same type: \java{hour} and \java{minute} are both integers.
 Note that each declaration statement ends with a semicolon (\java{;}).
+
+% height = 130 + 11 * num_lines
+\begin{trinket}[225]{Variables.java}
+public class Variables {
+  public static void main(String[] args) {
+    String firstName;
+    String lastName;
+    int hour, minute;
+  }
+}
+\end{trinket}
 
 \index{case-sensitive}
 
@@ -80,15 +86,13 @@ You can use any name you want for a variable.
 But there are about 50 reserved words, called {\bf keywords}, that you are not allowed to use as variable names.
 These words include \java{public}, \java{class}, \java{static}, \java{void}, and \java{int}, which are used by the compiler to analyze the structure of the program.
 
-You can see the full list of keywords at \url{https://thinkjava.org/keywords}, but you don't have to memorize them.
+You can find the complete list of keywords at \url{http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html}, but you don't have to memorize them.
 Most programming editors provide ``syntax highlighting'', which makes different parts of the program appear in different colors.
-And the compiler will complain even if one does sneak past you and your editor.
-
 %For example, keywords are often blue, strings red, comments green, and other code black.
 %If you type a variable name and it turns blue, watch out!
 
 
-\section{Assigning Variables}
+\section{Assigning variables}
 
 \index{assignment}
 \index{= assignment operator}
@@ -101,15 +105,34 @@ We do that with an {\bf assignment} statement.
 message = "Hello!";  // give message the value "Hello!"
 hour = 11;           // assign the value 11 to hour
 minute = 59;         // set minute to 59
+hour = hour + 1;     // increment hour
 \end{code}
+%slr: added fourth assignment statement above
 
-This example shows three assignments, and the comments illustrate different ways people sometimes talk about assignment statements.
+This example shows four assignment statements, and the comments illustrate different ways people sometimes talk about assignment statements.
 The vocabulary can be confusing here, but the idea is straightforward:
 
 \begin{itemize}
 \item When you declare a variable, you create a named storage location.
 \item When you make an assignment to a variable, you update its value.
 \end{itemize}
+
+%begin slr: discuss the two steps of an assignment statement
+\index{assignment!two steps of}
+Assignment statements involve two steps:
+
+\begin{itemize}
+\item Evaluate the right-hand-side.
+\item Store the result into the left-hand-side. 
+\end{itemize}
+
+Here are the two steps for the statement \java{hour = hour + 1;} above:
+\begin{itemize}
+\item First the right-hand-side \java{hour + 1} is evaluated.  The value of \java{hour} is 
+fetched from its storage location.  Then \java{1} is added to the fetched value.
+\item The result of step 1 is placed into the variable (storage location) named \java{hour}.
+\end{itemize}
+%end slr
 
 As a general rule, a variable has to have the same type as the value you assign to it.
 For example, you cannot store a string in \java{minute} or an integer in \java{message}.
@@ -144,7 +167,7 @@ int minute = 59;
 %For example:
 %
 %\begin{code}
-%int i = 1;
+%int i = 1;     
 %i = 2;
 %\end{code}
 %
@@ -155,19 +178,24 @@ int minute = 59;
 %In this example, there is no reason to make two assignments, but in many programs it is useful to reassign, or {\bf update}, variables.
 
 
-\section{Memory Diagrams}
+\section{Memory diagrams}
 \label{state}
 
 Because Java uses the \java{=} symbol for assignment, it is tempting to interpret the statement \java{a = b} as a statement of equality.
 It is not!
+
 
 Equality is commutative, and assignment is not.
 For example, in mathematics if $a = 7$ then $7 = a$.
 In Java \java{a = 7;} is a legal assignment statement, but \java{7 = a;} is not.
 The left side of an assignment statement has to be a variable name (storage location).
 
-Also, in mathematics, a statement of equality is true for all time.
+%slr:
+In mathematics, the equation $x = x + 1$ as a statement of equality false.  In java \java{x = x + 1;} is an assignment statement, {\bf not} a statement of equality.
+
+Finally, in mathematics, a statement of equality is true for all time.
 If $a = b$ now, $a$ is always equal to $b$.
+
 In Java, an assignment statement can make two variables equal, but they don't have to stay that way.
 
 \begin{code}
@@ -177,6 +205,8 @@ a = 3;         // a and b are no longer equal
 \end{code}
 
 The third line changes the value of \java{a}, but it does not change the value of \java{b}, so they are no longer equal.
+
+
 
 \index{state}
 
@@ -195,21 +225,11 @@ Figure~\ref{fig.state} shows the state of the program after these assignment sta
 \index{diagram!memory}
 
 Diagrams like this one that show the state of the program are called {\bf memory diagrams}.
-Each variable is represented with a box showing the name of the variable on the outside and its current value inside.
-
+Each variable is represented with a box showing the name of the variable on the outside and the value inside.
 As the program runs, the state of memory changes, so memory diagrams only show a particular point in time.
-For example, if we added the line \java{int c = 0;} to the previous example, the memory diagram would look like Figure~\ref{fig.state2}.
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{figs/state2.pdf}
-\caption{Memory diagram of the variables \java{a}, \java{b}, and \java{c}.}
-\label{fig.state2}
-\end{center}
-\end{figure}
 
 
-\section{Printing Variables}
+\section{Printing variables}
 \label{sec:printvar}
 
 You can display the current value of a variable using \java{print} or \java{println}.
@@ -243,22 +263,47 @@ The value of firstLine is Hello, again!
 
 Conveniently, the code for displaying a variable is the same regardless of its type.
 For example:
+%slr: commented out
+%\begin{code}
+%int hour = 11;
+%int minute = 59;
+%System.out.print("The current time is ");
+%System.out.print(hour);
+%System.out.print(":");
+%System.out.print(minute);
+%System.out.println(".");
+%\end{code}
 
-\begin{code}
-int hour = 11;
-int minute = 59;
-System.out.print("The current time is ");
-System.out.print(hour);
-System.out.print(":");
-System.out.print(minute);
-System.out.println(".");
-\end{code}
+%slr: added trinket
+% height = 130 + 15 * num_lines
+\begin{trinket}[235]{Print.java}
+public class Print {
+    public static void main(String[] args) {
+        int hour = 11;
+        int minute = 59;
+        System.out.print("The current time is ");
+        System.out.print(hour);
+        System.out.print(":");
+        System.out.print(minute);
+        System.out.println(".");
+    }
+}
+\end{trinket}
 
-The output of this program is:
+%The output of this program is:
+%
+%\begin{stdout}
+%The current time is 11:59.
+%\end{stdout}
 
-\begin{stdout}
-The current time is 11:59.
-\end{stdout}
+%slr:  in-line exercises
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Run the program.  What is the output?
+\item Try changing the type of hour (and/or minute) to \java{String}. Can you get it to work?
+\item Try modifying hour and minute with assignment statements before printing them out.
+\end{enumerate}
+
 
 To output multiple values on the same line, it's common to use several \java{print} statements followed by \java{println} at the end.
 But don't forget the \java{println}!
@@ -266,7 +311,7 @@ On many computers, the output from \java{print} is stored without being displaye
 If you omit the \java{println}, the program might display the stored output at unexpected times or even terminate without displaying anything.
 
 
-\section{Arithmetic Operators}
+\section{Arithmetic operators}
 
 %Recall that Java programs are organized into {\em classes}, each of which has one or more {\em methods}, each of which has one or more {\em statements}.
 %Most statements consist of one or more {\bf expressions}.
@@ -331,6 +376,36 @@ This result often confuses people.
 The value of \java{minute} is 59, and 59 divided by 60 should be 0.98333, not 0.
 The problem is that Java performs ``integer division'' when the operands are integers.
 By design, integer division always rounds toward zero, even in cases like this one where the next integer is close.
+%slr:  8-10-19
+\index{division!integer}
+\index{integer division}
+Here is an example of Java performing {\bf integer arithmetic} including use of the {\bf remainder} operator \%:
+\begin{trinket}[270]{IntegerArithmetic.java}
+public class IntegerArithmetic {
+    public static void main(String[] args) {
+        int x = 17;
+        int y = 3;
+        int quotient = x/y;  //integer division - result is an int
+        int remainder = x%y;
+        System.out.print("x/y is: ");
+        System.out.print(quotient);
+        System.out.print(" with remainder ");
+        System.out.print(remainder);
+    }
+}
+\end{trinket}
+
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Run the program.  What is the output?
+\item Try changing the values of x and y.  See if you can successfully predict the output if you make, for example, x = 23 and y = 6
+\item What does the division operator yield for the expression \java{34 / 5}? 
+\item What does the remainder operator yield for this expression: \java{34 % 5}? 
+\item What does the division operator yield for the expression \java{-34 / 5}? 
+\item What does the remainder operator yield for this expression: \java{-34 % 5}?
+\end{enumerate}
+%end slr:
 
 As an alternative, we can calculate a percentage rather than a fraction:
 
@@ -349,13 +424,15 @@ Again the result is rounded down, but at least now it's approximately correct.
 %To get a more precise answer, we can use a different type of variable that can store fractional values.
 
 
-\section{Floating-Point Numbers}
+
+
+\section{Floating-point numbers}
 
 \index{floating-point}
 \index{double}
 \index{type!double}
 
-A more general solution is to use {\bf floating-point} numbers, which represent values with decimal places.
+A more general solution is to use {\bf floating-point} numbers, which can represent fractions as well as integers.
 %As the name implies, the decimal point floats around (i.e., you can have as many decimal places as you want).
 In Java, the default floating-point type is called \java{double}, which is short for double-precision.
 You can create \java{double} variables and assign values to them the same way we did for the other types:
@@ -368,17 +445,30 @@ pi = 3.14159;
 Java performs ``floating-point division'' when one or more operands are \java{double} values.
 So we can solve the problem we saw in the previous section:
 
-\begin{code}
-double minute = 59.0;
-System.out.print("Fraction of the hour that has passed: ");
-System.out.println(minute / 60.0);
-\end{code}
+%slr:  8-10-19
+\begin{trinket}[210]{DoubleArithmetic.java}
+public class DoubleArithmetic {
+    public static void main(String[] args) {
+        double minute = 59.0;
+        System.out.print("Fraction of the hour that has passed: ");
+        System.out.println(minute / 60.0);
+    }
+}
+\end{trinket}
 
-The output is:
+Run the program.  What is the output now?  This is \textbf{floating-point} arithmetic.
 
-\begin{stdout}
-Fraction of the hour that has passed: 0.9833333333333333
-\end{stdout}
+%\begin{code}
+%double minute = 59.0;
+%System.out.print("Fraction of the hour that has passed: ");
+%System.out.println(minute / 60.0);
+%\end{code}
+
+%The output is:
+%
+%\begin{stdout}
+%Fraction of the hour that has passed: 0.9833333333333333
+%\end{stdout}
 
 Although floating-point numbers are useful, they can be a source of confusion.
 For example, Java distinguishes the integer value \java{1} from the floating-point value \java{1.0}, even though they seem to be the same number.
@@ -390,45 +480,74 @@ The following is illegal because the variable on the left is an \java{int} and t
 int x = 1.1;  // compiler error
 \end{code}
 
-\index{automatic conversion}
-
 It is easy to forget this rule, because in many cases Java {\em automatically} converts from one type to another:
 
 \begin{code}
 double y = 1;  // legal, but bad style
 \end{code}
 
+% slr: some changes and added trinket  8-10-19
 The preceding example should be illegal, but Java allows it by converting the \java{int} value \java{1} to the \java{double} value \java{1.0} automatically.
-This leniency is convenient, but it often causes problems for beginners.
-For example:
+This is a \textbf{widening conversion} and does not incur any loss of precision, so is done without comment or warning.  This leniency is convenient, but it often causes problems for beginners.
 
+Here is an example:
+\begin{trinket}[210]{DoubleArithmetic.java}
+public class DoubleArithmetic {
+    public static void main(String[] args) {
+        double y = 1/3;  // common mistake
+        System.out.print("y is ");
+        System.out.println(y);
+    }
+}
+\end{trinket}
+
+Run the program,  What happens?
+
+Line 3 is an assignment statement.  Recalling that assignment statements involve two steps
+
+\begin{itemize}
+\item Evaluate the right-hand-side.
+\item Store the result into the left-hand-side. 
+\end{itemize}
+
+we see that the right-hand side \java{1/3} is evaluated first with and yields the value 0!  This is integer arithmetic.
+Then the result is placed into the left-hand side yeilding the result seen in the trinket.
+
+A common fix for this mistake is to change the statement to read:
 \begin{code}
-double y = 1 / 3;  // common mistake
+double y = 1.0 / 3.0; 
 \end{code}
 
-\index{division!integer}
-\index{integer division}
+Make that change and try the program again.  What do you get now?
 
-You might expect the variable \java{y} to get the value \java{0.333333}, which is a legal floating-point value.
-But instead it gets the value \java{0.0}.
-The expression on the right divides two integers, so Java does integer division, which yields the \java{int} value \java{0}.
-Converted to \java{double}, the value assigned to \java{y} is \java{0.0}.
+%For example:
+%
+%\begin{code}
+%double y = 1 / 3;  // common mistake
+%\end{code}
 
-One way to solve this problem (once you figure out the bug) is to make the right-hand side a floating-point expression.
-The following sets \java{y} to \java{0.333333}, as expected:
 
-\begin{code}
-double y = 1.0 / 3.0;  // correct
-\end{code}
+
+%You might expect the variable \java{y} to get the value \java{0.333333}, which is a legal floating-point value.
+%But instead it gets the value \java{0.0}.
+%The expression on the right divides two integers, so Java does integer division, which yields the \java{int} value \java{0}.
+%Converted to \java{double}, the value assigned to \java{y} is \java{0.0}.
+%
+%One way to solve this problem (once you figure out the bug) is to make the right-hand side a floating-point expression.
+%The following sets \java{y} to \java{0.333333}, as expected:
+%
+%\begin{code}
+%double y = 1.0 / 3.0;  // correct
+%\end{code}
+%slr: end
 
 As a matter of style, you should always assign floating-point values to floating-point variables.
 The compiler won't make you do it, but you never know when a simple mistake will come back and haunt you.
 
 
-\section{Rounding Errors}
-\label{rounderr}
+\section{Rounding errors}
 
-%The operations we have seen so far---addition, subtraction, multiplication, and division---also work on floating-point values, although you might be interested to know that the underlying mechanism is completely different.
+%The operations we have seen so far -- addition, subtraction, multiplication, and division -- also work on floating-point values, although you might be interested to know that the underlying mechanism is completely different.
 %In fact, most processors have special circuitry just for performing floating-point operations.
 
 Most floating-point numbers are only {\em approximately} correct.
@@ -445,23 +564,38 @@ To represent these numbers, computers have to round off to the nearest floating-
 \index{error!rounding}
 
 The difference between the number we want and the floating-point number we get is called {\bf rounding error}.
-For example, the following two statements should be equivalent:
-
-\begin{code}
-System.out.println(0.1 * 10);
-System.out.println(0.1 + 0.1 + 0.1 + 0.1 + 0.1
+%slr:  8-10-19
+Here is an example of rounding error:
+\begin{trinket}[210]{RoundingError.java}
+public class RoundingError {
+    public static void main(String[] args) {
+       System.out.println(0.1 * 10);
+       System.out.println(0.1 + 0.1 + 0.1 + 0.1 + 0.1
                  + 0.1 + 0.1 + 0.1 + 0.1 + 0.1);
-\end{code}
+    }
+}
+\end{trinket}
 
-But on many machines, the output is:
+Run the program.  What do you get?
 
-\begin{stdout}
-1.0
-0.9999999999999999
-\end{stdout}
+%For example, the following two statements should be equivalent:
+%
+%\begin{code}
+%System.out.println(0.1 * 10);
+%System.out.println(0.1 + 0.1 + 0.1 + 0.1 + 0.1
+%                 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1);
+%\end{code}
+%
+%But on many machines, the output is:
+%
+%\begin{stdout}
+%1.0
+%0.9999999999999999
+%\end{stdout}
+%slr: end
 
-The problem is that \java{0.1} is a repeating fraction when converted into binary.
-So its floating-point representation stored in memory is only approximate.
+The problem is that \java{0.1}, which is a terminating fraction in decimal, is a repeating fraction in binary.
+So its floating-point representation is only approximate.
 When we add up the approximations, the rounding errors accumulate.
 
 For many applications, like computer graphics, encryption, statistical analysis, and multimedia rendering, floating-point arithmetic has benefits that outweigh the costs.
@@ -482,12 +616,12 @@ int balance = 12345;      // total number of cents
 
 \index{type!long}
 
-This solution works as long as the number of cents doesn't exceed the largest \java{int}, which is about 2 billion.
+This solution works as long as the number of cents doesn't exceed the largest integer, which is about 2 billion.
 %If necessary you can use \java{long} instead, which has a max value of $2^{63}-1$ (about 92 quadrillion dollars).
 %Hopefully nobody will ever need that much money!
 
 
-\section{Operators for Strings}
+\section{Operators for strings}
 
 \index{string!operator}
 \index{operator!string}
@@ -509,21 +643,52 @@ So \java{"Hello, " + "World!"} yields the string \java{"Hello, World!"}.
 Likewise if you have a variable called \java{name} that has type \java{String}, the expression \java{"Hello, " + name} appends the value of \java{name} to the hello string, which creates a personalized greeting.
 
 Since addition is defined for both numbers and strings, Java performs automatic conversions you may not expect:
+%slr:  8-10-19
 
-\begin{code}
-System.out.println(1 + 2 + "Hello");
-// the output is 3Hello
-
-System.out.println("Hello" + 1 + 2);
-// the output is Hello12
-\end{code}
+\begin{trinket}[195]{StringConcatenation.java}
+public class StringConcatenation {
+    public static void main(String[] args) {
+       System.out.println(1 + 2 + "Hello");
+       System.out.println("Hello" + 1 + 2);
+    }
+}
+\end{trinket}
+%\begin{code}
+%System.out.println(1 + 2 + "Hello");
+%// the output is 3Hello
+%
+%System.out.println("Hello" + 1 + 2);
+%// the output is Hello12
+%\end{code}
 
 Java executes these operations from left to right.
-In the first line, \java{1 + 2} is \java{3}, and \java{3 + "Hello"} is \java{"3Hello"}.
+In the first line, \java{1 + 2} is \java{3} (because both \java{1} and \java{2} are integers), and \java{3 + "Hello"} is \java{"3Hello"} (because one operand is of type String so the other is converted to the same type).
 But in the second line, \java{"Hello" + 1} is \java{"Hello1"}, and \java{"Hello1" + 2} is \java{"Hello12"}.
 
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item  What is happening here?
+\linebreak 
 
-%\section{Order of Operations}
+\begin{trinket}[270]{Print.java}
+public class Print {
+    public static void main(String[] args) {
+        String hour = "11";
+        int minute = 59;
+        hour = hour + 1;
+        minute = minute;
+        System.out.print("The current time is ");
+        System.out.print(hour);
+        System.out.print(":");
+        System.out.print(minute);
+        System.out.println(".");
+    }
+}
+\end{trinket}
+\end{enumerate}
+
+
+%\section{Order of operations}
 
 \index{order of operations}
 \index{precedence}
@@ -550,12 +715,12 @@ You can also use parentheses to make an expression easier to read, as in \java{(
 
 \end{itemize}
 
-See the official Java tutorials for a complete table of operator precedence: \url{https://thinkjava.org/operators}.
+See the Java tutorials for a complete table of operator precedence: \url{https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html}.
 If the order of operations is not obvious when looking at an expression, you can always add parentheses to make it more clear.
 But over time, you should internalize these kinds of details about the Java language.
 
 
-\section{Compiler Error Messages}
+\section{Compiler error messages}
 
 \index{error!message}
 
@@ -568,12 +733,11 @@ It is useful to distinguish among them in order to track them down more quickly.
 {\bf Compile-time} errors occur when you violate the rules of the Java language.
 For example, parentheses and braces have to come in matching pairs.
 So \java{(1 + 2)} is legal, but \java{8)} is not.
-In the latter case, the program cannot be compiled, and the compiler displays a ``syntax error''.
+In the latter case, the program cannot be compiled, and the compiler displays an error.
 
 \index{error!message}
 
-Error messages from the compiler usually indicate where in the program the error occurred.
-Sometimes they can tell you exactly what the error is.
+Error messages from the compiler usually indicate where in the program the error occurred, and sometimes they can tell you exactly what the error is.
 As an example, let's get back to the hello world program from Section~\ref{hello}.
 
 \begin{trinket}[235]{Hello.java}
@@ -619,12 +783,12 @@ The compiler discovers the error at the end of the program (line 7), but the mis
 
 Error messages contain useful information, so you should make an effort to read and understand them.
 But don't take them too literally.
-During the first few weeks of your programming career, you will probably spend a lot of time tracking down syntax and other compile-time errors.
+During the first few weeks of your programming career, you will probably spend a lot of time tracking down compile-time errors.
 As you gain experience, you will make fewer mistakes and find them more quickly.
 
 
-\section{Other Types of Errors}
-\label{exception}
+\section{Other types of errors}
+%\subsection{Run-time errors}
 
 \index{run-time error}
 \index{error!run-time}
@@ -635,7 +799,7 @@ In Java, these errors occur while the interpreter is executing byte code and som
 These errors are also called ``exceptions'' because they usually indicate that something unexpected has happened.
 
 Run-time errors are rare in the simple programs you will see in the first few chapters, so it might be a while before you encounter one.
-When a run-time error occurs, the program ``crashes'' (terminates) and displays an error message that explains what happened and where.
+When a run-time error occurs, the interpreter displays an error message that explains what happened and where.
 For example, if you accidentally divide by zero you will get a message like:
 
 \begin{small}
@@ -649,15 +813,15 @@ Exception in thread "main" java.lang.ArithmeticException: / by zero
 \index{exception!Arithmetic}
 
 Error messages are very useful for debugging.
-The first line includes the name of the exception, \java{ArithmeticException}, and a message that indicates more specifically what happened, division by zero.
+The first line includes the name of the exception, \java{java.lang.ArithmeticException}, and a message that indicates more specifically what happened, \java{/ by zero}.
 The next line shows the method where the error occurred; \java{Hello.main} indicates the method \java{main} in the class \java{Hello}.
 It also reports the file where the method is defined, {\tt Hello.java}, and the line number where the error occurred, \java{5}.
 
-%Sometimes error messages contain additional information that doesn't make sense.
-%It can be a challenge to figure out where to find the useful parts without being overwhelmed by extraneous information.
-%Keep in mind that the line where the program crashed may not be the line that needs to be corrected.
+Sometimes error messages contain additional information that doesn't make sense.
+It can be a challenge to figure out where to find the useful parts without being overwhelmed by extraneous information.
+Keep in mind that the line where the program crashed may not be the line that needs to be corrected.
 
-%\subsection{Logic Errors}
+%\subsection{Logic errors}
 
 \index{logic error}
 \index{error!logic}
@@ -667,6 +831,8 @@ The third type of error is a {\bf logic error}.
 If your program has a logic error, it will compile and run without generating error messages, but it will not do the right thing.
 Instead, it will do exactly what you told it to do.
 For example, here is a version of the hello world program with a logic error:
+
+\index{Hello.java}
 
 \begin{trinket}[235]{Hello.java}
 public class Hello {

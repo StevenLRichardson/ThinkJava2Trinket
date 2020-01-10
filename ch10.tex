@@ -92,15 +92,38 @@ There is no conflict between the local variable \java{x} and the attribute \java
 The purpose of dot notation is to identify {\em which} variable you are referring to unambiguously.
 
 You can use dot notation as part of an expression.
-For example:
+%slr: 12-17-19
+Here is an example:
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {Points.java}
+import java.awt.Point;
+public class Points {
+    
+    public static void main(String[] args) {
+       Point blank;
+       blank = new Point(3, 4);
+       System.out.println(blank.x + ", " + blank.y);
+       int sum = blank.x * blank.x + blank.y * blank.y;
+       System.out.println(sum);
+    }
+}
+\end{trinket}
+%\begin{code}
+%System.out.println(blank.x + ", " + blank.y);
+%int sum = blank.x * blank.x + blank.y * blank.y;
+%\end{code}
+%
+%The first line displays \java{3, 4}.
+%The second line calculates the value \java{25}.
 
-\begin{code}
-System.out.println(blank.x + ", " + blank.y);
-int sum = blank.x * blank.x + blank.y * blank.y;
-\end{code}
+Run the trinket and see the result.
 
-The first line displays \java{3, 4}.
-The second line calculates the value \java{25}.
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket \java{Points} to compute and print the distance from the origin to the \java{Point blank}.  (This is the square root of the sum of the squares of the x-coordinate and the y-coordiante.)
+\item Modify the trinket \java{Points} to create a second \java{Point} and print out its x and y coordinates.  Experiment to determine which primitive type the x and y coordinates are.  Check your answer by looking up the Java API documentation for \java{java.awt.Point} at \url{https://docs.oracle.com/javase/8/docs/api/}
+\end{enumerate}
+%slr: end 12-17-19
 
 
 \section{Objects as Parameters}
@@ -111,37 +134,90 @@ The second line calculates the value \java{25}.
 You can pass objects as parameters in the usual way.
 For example:
 
-\begin{code}
-public static void printPoint(Point p) {
-    System.out.println("(" + p.x + ", " + p.y + ")");
+%slr: 12-17-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [270] {PointParameter.java}
+import java.awt.Point;
+public class PointParameter {
+    
+    public static void printPoint(Point p) {
+       System.out.println("(" + p.x + ", " + p.y + ")");
+    }
+    
+    public static void main(String[] args) {
+       Point blank;
+       blank = new Point(3, 4);
+       printPoint(blank);
+    }
 }
-\end{code}
+\end{trinket}
+%\begin{code}
+%public static void printPoint(Point p) {
+%    System.out.println("(" + p.x + ", " + p.y + ")");
+%}
+%\end{code}
 
-This method takes a point as an argument and displays its attributes in parentheses.
-If you invoke \java{printPoint(blank)}, it displays \java{(3, 4)}.
+The \java{void} method \java{printPoint} takes a \java{Point} as an argument and displays its attributes in parentheses.
+%If you invoke \java{printPoint(blank)}, it displays \java{(3, 4)}.
+
+Run the trinket to see what is produced.
+%slr: end 12-17-19
 
 As another example, we can rewrite the \java{distance} method from Section~\ref{distance} so that it takes two \java{Point}s as parameters instead of four \java{double}s.
 
-\begin{code}
-public static double distance(Point p1, Point p2) {
-    int dx = p2.x - p1.x;
-    int dy = p2.y - p1.y;
-    return Math.sqrt(dx * dx + dy * dy);
+%slr: 12-17-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [300] {Dist1.java}
+import java.awt.Point;
+public class Dist1 {
+    //local method to compute distance between two Point objects
+    public static double distance(Point p1, Point p2) {
+       int dx = p2.x - p1.x;
+       int dy = p2.y - p1.y;
+       return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    public static void main(String[] args) {
+       Point p = new Point(3, 4);
+       Point q = new Point(6, 8);
+       System.out.println("The distance between p and q is " + distance(p,q));
+    }
 }
-\end{code}
+\end{trinket}
+%\begin{code}
+%public static double distance(Point p1, Point p2) {
+%    int dx = p2.x - p1.x;
+%    int dy = p2.y - p1.y;
+%    return Math.sqrt(dx * dx + dy * dy);
+%}
+%\end{code}
 
 Passing objects as parameters makes the source code more readable and less error-prone because related values are bundled together.
 
-You actually don't need to write a \java{distance} method, because \java{Point} objects already have one.
-To compute the distance between two points, we invoke \java{distance} on one and pass the other as an argument.
+You actually don't need to write a \java{distance} method, because \java{Point} objects already have one. Again, refer to the API documentation at \url{https://docs.oracle.com/javase/8/docs/api/}. To compute the distance between two points, we invoke \java{distance} on one and pass the other as an argument.
 
-\begin{code}
-Point p1 = new Point(0, 0);
-Point p2 = new Point(3, 4);
-double dist = p1.distance(p2);  // dist is 5.0
-\end{code}
+%slr: 12-17-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [240] {Dist.java}
+import java.awt.Point;
+public class Dist {
+    
+    public static void main(String[] args) {
+       Point p = new Point(3, 4);
+       Point q = new Point(6, 8);
+       double dist = p.distance(q);  //Point method
+       System.out.println("The distance between p and q is " + dist);
+    }
+}
+\end{trinket}
+%\begin{code}
+%Point p1 = new Point(0, 0);
+%Point p2 = new Point(3, 4);
+%double dist = p1.distance(p2);  // dist is 5.0
+%\end{code}
+%slr: end 12-17-19
 
-It turns out you don't need the \java{printPoint} method either.
+It turns out you don't need the \java{printPoint} method (from the \java{PointParameter} trinket above) either.
 If you invoke \java{System.out.println(blank)}, it prints the type of the object and the values of the attributes:
 
 \begin{stdout}
@@ -153,6 +229,13 @@ java.awt.Point[x=3,y=4]
 \java{Point} objects provide a method called \java{toString} that returns a string representation of a point.
 When you call \java{println} with objects, it {\em automatically} calls \java{toString} and displays the result.
 
+%slr: 12-17-19
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket \java{Dist} to print out the \java{Point} objects \java{p} and \java{q} by calling the \java{toString} method explicity, (for example \java{p.toString()}).
+\item Modify the trinket \java{Dist} to print out the \java{Point} objects \java{p} and \java{q} directly. (The \java{println} method invokes \java{goString} implicitly.) Interpret what is produced.  
+\end{enumerate}
+%slr; end 12-17-19
 
 \section{Objects as Return Values}
 \label{sec:Rectangle}
@@ -196,21 +279,49 @@ Again, \java{println} uses the \java{toString} method provided by \java{Rectangl
 \index{statement!return}
 
 You can also write methods that return new objects.
-For example, \java{findCenter} takes a \java{Rectangle} as an argument and returns a \java{Point} with the coordinates of the center of the rectangle:
+%slr:  12-17-19 mods + added trinket
+For example, the \java{findCenter} method in the trinket below takes a \java{Rectangle} as an argument and returns a \java{Point} with coordinates the center of the rectangle:
 
-\begin{code}
-public static Point findCenter(Rectangle box) {
-    int x = box.x + box.width / 2;
-    int y = box.y + box.height / 2;
-    return new Point(x, y);
+%slr: 12-17-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [280] {RectCenter.java}
+import java.awt.Rectangle;
+import java.awt.Point;
+public class RectCenter {
+
+    public static Point findCenter(Rectangle box) {
+       int x = box.x + box.width / 2;
+       int y = box.y + box.height / 2;
+       return new Point(x, y);
+    }
+    
+    public static void main(String[] args) {
+       Rectangle rect = new Rectangle(20, 40, 100, 50);
+       Point center = findCenter(rect);  
+       System.out.println("The center of rect is " + center);
+    }
 }
-\end{code}
+\end{trinket}
+%\begin{code}
+%public static Point findCenter(Rectangle box) {
+%    int x = box.x + box.width / 2;
+%    int y = box.y + box.height / 2;
+%    return new Point(x, y);
+%}
+%\end{code}
 
-The return type of this method is \java{Point}.
-The last line creates a new \java{Point} object and returns a reference to it.
+%The return type of this method is \java{Point}.
+%The last line creates a new \java{Point} object and returns a reference to it.
 
 %The \java{Rectangle} we created using the arguments \java{(0, 0, 100, 200)} has its upper-left corner in the origin.
 %The center of this rectangle is \java{(50, 100)}, which is 50 pixels to the right and 100 pixels down from the origin.
+
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item add find concentric method?  Or as a lab?
+\end{enumerate}
+%slr: end 12-17-19
 
 \section{Rectangles are Mutable}
 
@@ -457,22 +568,23 @@ This example uses three kinds of variables:
 \item Local variables (\java{oldv} and \java{newv})
 
 \index{this}
-
 \item Attributes (\java{this.x})
 
 \end{enumerate}
 
-Parameters and local variables are created when a method is invoked, and they disappear when the method returns.
-They can be used anywhere inside the method, but not in other methods and not in other classes.
+Parameters and local variables are created in a stack frame when a method is invoked (see Figure~\ref{fig.stack}).  The method's stack frame, and therefore its parameters and local variables, disappear when the method returns.
+They can be used anywhere inside the method, but are not visible in other methods or in other classes.
 
-Attributes are created when an object is created, and they disappear when the object is destroyed.
-They can be used in any of the object's methods, using the keyword \java{this}.
-And if they are public, they can be used in other classes via references to the object, \java{box1.x}.
+Attributes are created and stored within an object when created, and they disappear when the object is destroyed.
+They can be used \textit{anywhere} within the object including its methods using the keyword \java{this} even if declared private.
+And if they are public, they can be used in other classes via references to the object, for example \java{box1.x}.
 
-When the Java compiler encounters a variable name, it searches backwards for its declaration.
+When the Java compiler encounters a variable name, it searches backwards for its declaration in ever-widening scope.
 The compiler first looks for local variables, then parameters, then attributes.
 
 % ABD: The previous three paragraphs pack in a lot.  Some of it is a little early, and some of it is not explained carefully here.  So I think this is a soft spot to come back to in future revisions.
+
+%slr: 12-17-19.  I agree.  Slight modifications made to above three paragraphs.
 
 
 %\section{Shadowing}
@@ -580,7 +692,7 @@ In the following example, \java{s1} and \java{s2} are created differently, but t
 
 \index{Surprise.java}
 
-\begin{trinket}[265]{Surprise.java}
+\begin{trinket}[200]{Surprise.java}
 public class Surprise {
     public static void main(String[] args) {
         String s1 = "Hi, Mom!";
@@ -641,18 +753,36 @@ Because \java{StringBuilder} objects are mutable, they can implement concatenati
 Here's a version of the program that uses \java{StringBuilder}:
 
 %TODO: ML suggests also showing how to print the results
-
-\begin{code}
-StringBuilder text = new StringBuilder();
-for (int i = 0; i < 10; i++) {
-    String line = in.nextLine();
-    text.append(line);
-    text.append('\n');
+%slr:  12-20-19
+% height = 130 + 11 * num_lines
+\begin{trinket}[300]{MutableString.java}
+import java.util.Scanner;
+public class MutableString {
+    public static void main(String[] args) {
+       Scanner in = new Scanner(System.in);
+       StringBuilder text = new StringBuilder();
+       System.out.println("Enter 10 lines of lines of text followed by <return>:");
+       for (int i = 0; i < 3; i++) {
+          String line = in.nextLine();
+          text.append(line);
+          text.append('\n');
+       }
+       System.out.println("Here is what you entered:\n" + text);
+    }
 }
-\end{code}
+\end{trinket}
+%\begin{code}
+%StringBuilder text = new StringBuilder();
+%for (int i = 0; i < 10; i++) {
+%    String line = in.nextLine();
+%    text.append(line);
+%    text.append('\n');
+%}
+%\end{code}
+%slr: end 12-10-19
 
-The \java{append} method takes a \java{String} as a parameter and appends it to the end of the \java{StringBuilder}.
-Each time it is invoked, it modifies the \java{StringBuilder}; it doesn't create any new objects.
+The \java{StringBuilder append} method takes a \java{String} as a parameter and appends it to the end of the \java{StringBuilder}.
+Each time it is invoked, it modifies the \java{StringBuilder} object; it doesn't create any new objects.
 
 The \java{StringBuilder} class also provides methods for inserting and deleting parts of strings efficiently.
 Programs that manipulate large amounts of text run much faster if you use \java{StringBuilder} instead of \java{String}.

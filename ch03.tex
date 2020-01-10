@@ -1,11 +1,11 @@
-\chapter{Input and Output}
+\chapter{Input and output}
 
 The programs we've looked at so far simply display messages, which doesn't really involve that much computation.
 This chapter will show you how to read input from the keyboard, use that input to calculate a result, and then format that result for output.
 %We will also look at some technical details about how operating systems work.
 
 
-\section{The System Class}
+\section{The System class}
 
 \index{class!System}
 
@@ -17,15 +17,32 @@ It also provides \java{System.out}, which is a special value that has additional
 
 In fact, we can use \java{System.out.println} to display the value of \java{System.out}:
 
-\begin{code}
-System.out.println(System.out);
-\end{code}
+%slr: 8-13-19 replace with trinket object
+%\begin{code}
+%System.out.println(System.out);
+%\end{code}
+%
+%The result is:
+%
+%\begin{stdout}
+%java.io.PrintStream@685d72cd
+%\end{stdout}
+% height = 130 + 11 * num_lines
+\begin{trinket} [190] {PrintSystem.java}
+public class PrintSystem {
 
-The result is:
+    public static void main(String[] args) {
+       System.out.println(System.out);  //what will we get?!
+    }
+}
+\end{trinket}
+
+Run the trinket. What do you get? Something like:
 
 \begin{stdout}
 java.io.PrintStream@685d72cd
 \end{stdout}
+%slr: end 8-13-19
 
 \index{package}
 \index{java.io}
@@ -56,7 +73,7 @@ The source code for these classes is usually included with the compiler (see Sec
 \end{figure}
 
 
-\section{The Scanner Class}
+\section{The Scanner class}
 \label{scanner}
 
 \index{Scanner}
@@ -91,24 +108,23 @@ import java.util.Scanner;
 This {\bf import statement} tells the compiler that when you refer to \java{Scanner}, you mean the one defined in \java{java.util}.
 Using an import statement is necessary because there might be another class named \java{Scanner} in another package.
 %Using an import statement makes your code unambiguous.
+Import statements can't be inside a class definition.
+By convention, they are usually at the beginning of the file.
 
 Next you have to initialize the \java{Scanner}.
 This line declares a \java{Scanner} variable named \java{in} and creates a \java{Scanner} that reads input from \java{System.in}:
 %We'll explain the \java{new} operator in more detail in Section~\ref{point}.
-
-\index{new}
-\index{operator!new}
 
 \begin{code}
 Scanner in = new Scanner(System.in);
 \end{code}
 
 The \java{Scanner} class provides a method called \java{nextLine} that reads a line of input from the keyboard and returns a \java{String}.
-Here's a complete example that reads two lines and repeats them back to the user:
+The following example reads two lines and repeats them back to the user:
 
 \index{Echo.java}
-
-\begin{trinket}{Echo.java}
+% height = 130 + 11 * num_lines
+\begin{trinket} [400] {Echo.java}
 import java.util.Scanner;
 
 public class Echo {
@@ -128,9 +144,7 @@ public class Echo {
 }
 \end{trinket}
 
-Import statements can't be inside a class definition.
-By convention, they are usually at the beginning of the file.
-If you omit the import statement, you get a compiler error like ``cannot find symbol''.
+If you omit the import statement at the top of the file, you will get a compiler error saying ``cannot find symbol''.
 That means the compiler doesn't know where to find the definition for \java{Scanner}.
 
 \index{java.lang}
@@ -138,10 +152,10 @@ That means the compiler doesn't know where to find the definition for \java{Scan
 You might wonder why we can use the \java{System} class without importing it.
 \java{System} belongs to the \java{java.lang} package, which is imported automatically.
 According to the documentation, \java{java.lang} ``provides classes that are fundamental to the design of the Java programming language.''
-The \java{String} class is also part of \java{java.lang}.
+The \java{String} class is also part of the \java{java.lang} package.
 
 
-\section{Language Elements}
+\section{Language elements}
 
 \index{language!elements}
 
@@ -150,7 +164,7 @@ Figure~\ref{fig.package} shows how these ``language elements'' are related.
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=284pt]{figs/package.pdf}
+\includegraphics[width=4in]{figs/package.pdf}
 \caption{Elements of the Java language, from largest to smallest.}
 \label{fig.package}
 \end{center}
@@ -177,12 +191,12 @@ Note there is a big difference between the Java {\em language}, which defines th
 For example, the keywords \java{public} and \java{class} are part of the Java language, but the names \java{PrintStream} and \java{Scanner} are not.
 
 The standard edition of Java comes with {\em several thousand} classes you can use, which can be both exciting and intimidating.
-You can browse this library at \url{https://thinkjava.org/apidoc}.
+You can browse this library at \url{http://docs.oracle.com/javase/8/docs/api/}.
 Interestingly, most of the Java library is written in Java.
 
 
-%\section{Inches to Centimeters}
-\section{Literals and Constants}
+%\section{Inches to centimeters}
+\section{Literals and constants}
 
 %Now let's work through an example that's a little more useful.
 Although most of the world has adopted the metric system for weights and measures, some countries are stuck with Imperial units.
@@ -225,13 +239,35 @@ System.out.print(inch + " in = ");
 System.out.println(cm + " cm");
 \end{code}
 
+%slr: 8-13-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [295] {Convert1.java}
+import java.util.Scanner;
+
+public class Convert1 {
+
+    public static void main(String[] args) {
+        int inch;
+        double cm;
+        Scanner in = new Scanner(System.in);
+        System.out.print("How many inches? ");
+        inch = in.nextInt();
+        cm = inch * 2.54;  //where does 2.54 come from?!
+        System.out.print(inch + " in = ");
+        System.out.println(cm + " cm");
+    }
+}
+\end{trinket}
+
+Run the program.
+%slr: end 8-13-19
 This code works correctly, but it has a minor problem.
 If another programmer reads this code, they might wonder where 2.54 comes from.
 For the benefit of others (and yourself in the future), it would be better to assign this value to a variable with a meaningful name.
 %We'll demonstrate in the next section.
 
 
-%\section{Literals and Constants}
+%\section{Literals and constants}
 
 \index{literal}
 
@@ -264,12 +300,17 @@ final double CM_PER_INCH = 2.54;
 
 Declaring that a variable is \java{final} means that it cannot be reassigned once it has been initialized.
 If you try, the compiler gives an error.
-
 Variables declared as \java{final} are called {\bf constants}.
 By convention, names for constants are all uppercase, with the underscore character (\java{_}) between words.
 
+%slr: 8-13-19
+\textbf{Section Exercise:}
+\begin{enumerate}
+\item Change the \java{Convert1} class in the trinket above to reflect the above change - replace the magic number 2.54 with the \java{final double} constant.  Make sure the program works the same.
+\end{enumerate}
+%slr: end 8-13-19
 
-\section{Formatting Output}
+\section{Formatting output}
 \label{printf}
 
 When you output a \java{double} using \java{print} or \java{println}, it displays up to 16 decimal places:
@@ -300,7 +341,7 @@ System.out.printf("Four thirds = %.3f", 4.0 / 3.0);
 
 The first value in the parentheses is a {\bf format string} that specifies how the output should be displayed.
 This format string contains ordinary text followed by a {\bf format specifier}, which is a special sequence that starts with a percent sign.
-The format specifier \java{\%.3f} indicates that the following value should be displayed as floating-point, rounded to three decimal places.
+The format specifier \java{%.3f} indicates that the following value should be displayed as floating-point, rounded to three decimal places.
 The result is:
 
 \begin{stdout}
@@ -324,32 +365,28 @@ The result is:
 Like \java{print}, \java{printf} does not append a newline.
 So format strings often end with a newline character.
 
-The format specifier \java{\%d} displays integer values (``d'' stands for ``decimal'', meaning base 10 integer).
-The values are matched up with the format specifiers in order, so \java{inch} is displayed using \java{\%d}, and \java{cm} is displayed using \java{\%f}.
+The format specifier \java{%d} displays integer values (``d'' stands for ``decimal'', not double).
+The values are matched up with the format specifiers in order, so \java{inch} is displayed using \java{%d}, and \java{cm} is displayed using \java{%f}.
 
 Learning about format strings is like learning a sub-language within Java.
 There are many options, and the details can be overwhelming.
 Table~\ref{tab:format} lists a few common uses, to give you an idea of how things work.
 
-\index{hexadecimal}
-
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{|l|l|l|}
 \hline
-\java{\%d} & integer in base 10 (``decimal'') & \java{12345} \\
+\java{%d} & decimal integer & 12345 \\
 \hline
-\java{\%,d} & integer with comma separators & \java{12,345} \\
+%\java{%,d} & decimal integer with comma separators & 12,345 \\
+%\hline
+\java{%08d} & padded with zeros, at least 8 digits wide & 00012345 \\
 \hline
-\java{\%08d} & padded with zeros, at least 8 digits wide & \java{00012345} \\
+\java{%f} & floating-point & 6.789000 \\
 \hline
-\java{\%f} & floating-point number & \java{6.789000} \\
+\java{%.2f} & rounded to 2 decimal places & 6.79 \\
 \hline
-\java{\%.2f} & rounded to 2 decimal places & \java{6.79} \\
-\hline
-\java{\%s} & string of characters & \java{"Hello"} \\
-\hline
-\java{\%x} & integer in base 16 (``hexadecimal'') & \java{bc614e} \\
+\java{%s} & string of characters & \java{"Hello"} \\
 \hline
 \end{tabular}
 \caption{Example format specifiers}
@@ -360,18 +397,15 @@ Table~\ref{tab:format} lists a few common uses, to give you an idea of how thing
 For more details, refer to the documentation of \java{java.util.Formatter}.
 The easiest way to find documentation for Java classes is to do a web search for ``Java'' and the name of the class.
 
-
-\section{Reading Error Messages}
-
-Notice that the values you pass to \java{printf} are separated by commas.
-If you are used to using the \java{+} operator to concatenate strings, you might write something like this by accident:
+In contrast to \java{print} and \java{println}, \java{printf} uses commas to separate each value.
+The following line accidentally {\em concatenates} \java{inch} and \java{cm} to the format string, rather than substitute them:
 
 \begin{code}
-System.out.printf("inches = %d" + inch);  // error
+System.out.printf("%d in = %f cm\n" + inch + cm);  // error
 \end{code}
 
-This line of code is legal, so the compiler won't catch the mistake.
-Instead, when you run the program, it causes an exception:
+Unfortunately the compiler won't catch this kind of bug, because it's within a legal Java statement.
+However when you run the program, it will display:
 
 \index{MissingFormatArgumentException}
 \index{exception!MissingFormatArgument}
@@ -387,32 +421,40 @@ Format specifier '%d'
 \end{stdout}
 \end{small}
 
-As we saw in Section~\ref{exception}, the error message includes the name of the exception, \java{MissingFormatArgumentException}, followed by additional details, \verb"Format specifier '%d'".
-That means it doesn't know what value to substitute for \java{\%d}.
+Error messages may seem cryptic, but it's important to read them carefully.
+Starting from the top, this one says ``missing format argument'' and ``format specifier \%d''.
+In order words, it doesn't know what value to substitute for the \%d.
+The bottom of the error indicates where to look: Example.java line 10.
 
-%CSM: we don't introduce the terms "argument" and "invoke" until the next chapter,
-%but I think it's okay here since we're explaining MissingFormatArgumentException
+It might be difficult to see what's wrong, given that \java{inch} and \java{cm} are at the end of the \java{printf} statement.
+But if \java{inch} is 1 and \java{cm} is 2.54, the actual format string would be \java{"%d in = %f cm\n12.54"}.
 
-The problem is that concatenation happens first, before \java{printf} executes.
-If the value of \java{inch} is \java{100}, the result of concatenation is \verb'"inches = %d100"'.
-So \java{printf} gets the format string, but it doesn't get any values to format.
+%slr: 8-13-19
+Here is another try at the \java{Convert} program:
+% height = 130 + 11 * num_lines
+\begin{trinket} [295] {Convert2.java}
+import java.util.Scanner;
 
-\index{stack trace}
+public class Convert2 {
 
-The error message also includes a {\bf stack trace} that shows the method that was running when the error was detected, \java{java.util.Formatter.format}, the method that ran it, \java{java.io.PrintStream.format}, the method that ran {\em that}, \java{java.io.PrintStream.printf}, and finally the method you actually wrote, \java{Example.main}.
+    public static void main(String[] args) {
+        int inch;
+        double cm;
+        final double CM_PER_INCH = 2.54;
+        Scanner in = new Scanner(System.in);
+        System.out.print("How many inches? ");
+        inch = in.nextInt();
+        cm = inch * CM_PER_INCH;
+        System.out.printf("%d in = %f cm\n", inch, cm);
+    }
+}
+\end{trinket}
 
-Each line also names the source file of the method and the line it was on (e.g., \java{Example.java:10}).
-That's a lot of information, and it includes method names and files names you have no reason to know at this point.
-But don't be overwhelmed.
+Run it and see what you get.  We are slowly improving the \java{Convert} class.
+%slr: end 8-13-19
 
-When you see an error message like this, read the first line carefully to see {\em what} happened.
-Then read the last line to see {\em where} it happened.
-In some IDEs, you can click on the error message and it will take you to the line of code that was running.
-But remember that where the error is discovered is not always where it was caused.
-
-
-%\section{Centimeters to Inches}
-\section{Type Cast Operators}
+%\section{Centimeters to inches}
+\section{Type cast operators}
 
 Now suppose we have a measurement in centimeters, and we want to round it off to the nearest inch.
 It is tempting to write:
@@ -421,10 +463,8 @@ It is tempting to write:
 inch = cm / CM_PER_INCH;  // syntax error
 \end{code}
 
-But the result is an error---you get something like, ``incompatible types: possible lossy conversion from double to int.''
+But the result is an error -- you get something like, ``incompatible types: possible lossy conversion from double to int.''
 The problem is that the value on the right is floating-point, and the variable on the left is an integer.
-
-\index{automatic conversion}
 
 Java converts an \java{int} to a \java{double} automatically, since no information is lost in the process.
 On the other hand, going from \java{double} to \java{int} would lose the decimal places.
@@ -443,7 +483,7 @@ int x = (int) pi;
 
 The \java{(int)} operator has the effect of converting what follows into an integer.
 In this example, \java{x} gets the value \java{3}.
-Like integer division, casting to an integer always rounds toward zero, even if the fractional part is \java{0.999999} (or \java{-0.999999}).
+Like integer division, casting to an integer always rounds toward zero, even if the fraction part is \java{0.999999} (or \java{-0.999999}).
 In other words, it simply throws away the fractional part.
 
 In order to use a cast operator, the types must be compatible.
@@ -468,15 +508,38 @@ Keeping that in mind, here's how we can convert centimeters to inches:
 
 \begin{code}
 inch = (int) (cm / CM_PER_INCH);
-System.out.printf("%f cm = %d in\n", cent, inch);
+System.out.printf("%f cm = %d in\n", cm, inch);
 \end{code}
 
 The parentheses after the cast operator require the division to happen before the type cast.
 And the result is rounded toward zero.
 We will see in the next chapter how to round floating-point numbers to the closest integer.
 
+%slr: 8-13-19
+Here a version of the \java{Convert} program that converts the other way - from centimeters to inches:
+% height = 130 + 11 * num_lines
+\begin{trinket} [295] {Convert3.java}
+import java.util.Scanner;
 
-\section{Remainder Operator}
+public class Convert3 {
+
+    public static void main(String[] args) {
+        int inch;
+        int cm;
+        final double CM_PER_INCH = 2.54;
+        Scanner in = new Scanner(System.in);
+        System.out.print("How many centimeters? ");
+        cm = in.nextInt();
+        inch = (int)(cm / CM_PER_INCH);
+        System.out.printf("%d cm = %d in\n", cm, inch);
+    }
+}
+\end{trinket}
+
+Run it and see what you get.
+%slr: end 8-13-19
+
+\section{Remainder operator}
 
 Let's take the example one step further: suppose you have a measurement in inches and you want to convert to feet and inches.
 The goal is divide by 12 (the number of inches in a foot) and keep the remainder.
@@ -488,7 +551,7 @@ The goal is divide by 12 (the number of inches in a foot) and keep the remainder
 
 We have already seen the division operation (\java{/}), which computes the quotient of two numbers.
 If the numbers are integers, it performs integer division.
-Java also provides the {\bf modulo} operation (\java{\%}), which divides two numbers and computes the remainder.
+Java also provides the {\bf modulo} operation (\java{%}), which divides two numbers and computes the remainder.
 
 Using division and modulo, we can convert to feet and inches like this:
 
@@ -503,11 +566,11 @@ So 76 inches is 6 feet, 4 inches.
 
 \index{modulus}
 
-Many people (and textbooks) incorrectly refer to \java{\%} as the ``modulus operator''.
+Many people (and textbooks) incorrectly refer to \java{%} as the ``modulus operator''.
 In mathematics, however, {\bf modulus} is the number you're dividing by.
 In the previous example, the modulus is 12.
+The Java language specification refers to  \java{%} as the ``remainder operator''.
 
-The Java language specification refers to  \java{\%} as the ``remainder operator''.
 The remainder operator looks like a percent sign, but you might find it helpful to think of it as a division sign ($\div$) rotated to the left.
 
 %Note that both \java{/} and \java{\%} perform {\em integer division}, so the result always rounds down.
@@ -517,12 +580,12 @@ The remainder operator looks like a percent sign, but you might find it helpful 
 \index{extract digits}
 
 Modular arithmetic turns out to be surprisingly useful.
-For example, you can check whether one number is divisible by another: if \java{x \% y} is zero, then \java{x} is divisible by \java{y}.
-You can use remainder to ``extract'' digits from a number: \java{x \% 10} yields the rightmost digit of \java{x}, and \java{x \% 100} yields the last two digits.
+For example, you can check whether one number is divisible by another: if \java{x % y} is zero, then \java{x} is divisible by \java{y}.
+You can use remainder to ``extract'' digits from a number: \java{x % 10} yields the rightmost digit of \java{x}, and \java{x % 100} yields the last two digits.
 And many encryption algorithms use the remainder operator extensively.
 
 
-\section{Putting It All Together}
+\section{Putting it all together}
 
 At this point, you have seen enough Java to write useful programs that solve everyday problems.
 You can (1) import Java library classes, (2) create a \java{Scanner}, (3) get input from the keyboard, (4) format output with \java{printf}, and (5) divide and mod integers.
@@ -533,7 +596,7 @@ Now we will put everything together in a complete program:
 
 \index{Convert.java}
 
-\begin{trinket}{Convert.java}
+\begin{trinket} [450] {Convert.java}
 import java.util.Scanner;
 
 /**
@@ -577,36 +640,76 @@ When statements including \java{System.out.printf} get long (generally wider tha
 The reader should never have to scroll horizontally.
 
 
-\section{The Scanner Bug}
+\section{The Scanner bug}
 
 Now that you've had some experience with \java{Scanner}, there is an unexpected behavior we want to warn you about.
-The following code fragment asks users for their name and age:
+%slr:  8-13-19
+%The following code fragment asks users for their name and age:
+%
+%\begin{code}
+%System.out.print("What is your name? ");
+%name = in.nextLine();
+%System.out.print("What is your age? ");
+%age = in.nextInt();
+%System.out.printf("Hello %s, age %d\n", name, age);
+%\end{code}
+%
+%The output might look something like this:
+%
+%\begin{stdout}
+%Hello Grace Hopper, age 45
+%\end{stdout}
+The following Java class asks the user for their name and age:
+% height = 130 + 11 * num_lines
+\begin{trinket} [295] {NameAge.java}
+import java.util.Scanner;
 
-\begin{code}
-System.out.print("What is your name? ");
-name = in.nextLine();
-System.out.print("What is your age? ");
-age = in.nextInt();
-System.out.printf("Hello %s, age %d\n", name, age);
-\end{code}
+public class NameAge {
 
-The output might look something like this:
+    public static void main(String[] args) {
+        String name;
+        int age;
+        Scanner in = new Scanner(System.in);
+        System.out.print("What is your name? ");
+        name = in.nextLine();
+        System.out.print("What is your age? ");
+        age = in.nextInt();
+        System.out.printf("Hello %s, age %d\n",name,age);
+    }
+}
+\end{trinket}
 
-\begin{stdout}
-Hello Grace Hopper, age 45
-\end{stdout}
-
+Run it and see what you get.  This appears to work the way we want it to.  
+%slr: end 8-13-19
 When you read a \java{String} followed by an \java{int}, everything works just fine.
-But when you read an \java{int} followed by a \java{String}, something strange happens.
+But when you read an \java{int} followed by a \java{String}, something strange happens:
 
-\begin{code}
-System.out.print("What is your age? ");
-age = in.nextInt();
-System.out.print("What is your name? ");
-name = in.nextLine();
-System.out.printf("Hello %s, age %d\n", name, age);
-\end{code}
+%\begin{code}
+%System.out.print("What is your age? ");
+%age = in.nextInt();
+%System.out.print("What is your name? ");
+%name = in.nextLine();
+%System.out.printf("Hello %s, age %d\n", name, age);
+%\end{code}
+% height = 130 + 11 * num_lines
+\begin{trinket} [295] {AgeName.java}
+import java.util.Scanner;
 
+public class AgeName {
+
+    public static void main(String[] args) {
+        String name;
+        int age;
+        Scanner in = new Scanner(System.in);
+        System.out.print("What is your age? ");
+        age = in.nextInt();
+        System.out.print("What is your name? ");
+        name = in.nextLine();
+        System.out.printf("Hello %s, age %d\n",name,age);
+    }
+}
+\end{trinket}
+%slr: end 8-13-19
 Try running this example code.
 It doesn't let you input your name, and it immediately displays the output:
 
@@ -625,32 +728,55 @@ Instead, it gets a ``stream of characters'' as shown in Figure~\ref{fig.hopper1}
 \end{center}
 \end{figure}
 
+%TODO define call/invoke or use other term?
+
 The arrow indicates the next character to be read by \java{Scanner}.
-When you run \java{nextInt}, it reads characters until it gets to a non-digit.
-Figure~\ref{fig.hopper2} shows the state of the stream after \java{nextInt} runs.
+When you call \java{nextInt}, it reads characters until it gets to a non-digit.
+Figure~\ref{fig.hopper2} shows the state of the stream after \java{nextInt} is called.
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{figs/hopper2.pdf}
-\caption{A stream of characters after \java{nextInt} runs.}
+\caption{A stream of characters after \java{nextInt} is called.}
 \label{fig.hopper2}
 \end{center}
 \end{figure}
 
 At this point, \java{nextInt} returns \java{45}.
-The program then displays the prompt \java{"What is your name? "} and runs \java{nextLine}, which reads characters until it gets to a newline.
+The program then displays the prompt \java{"What is your name? "} and calls \java{nextLine}, which reads characters until it gets to a newline.
 But since the next character is already a newline, \java{nextLine} returns the empty string \java{""}.
 
 To solve this problem, you need an extra \java{nextLine} after \java{nextInt}.
+%slr: 8-13-19
+%\begin{code}
+%System.out.print("What is your age? ");
+%age = in.nextInt();
+%in.nextLine();  // read the newline
+%System.out.print("What is your name? ");
+%name = in.nextLine();
+%System.out.printf("Hello %s, age %d\n", name, age);
+%\end{code}
 
-\begin{code}
-System.out.print("What is your age? ");
-age = in.nextInt();
-in.nextLine();  // read the newline
-System.out.print("What is your name? ");
-name = in.nextLine();
-System.out.printf("Hello %s, age %d\n", name, age);
-\end{code}
+% height = 130 + 11 * num_lines
+\begin{trinket} [295] {AgeName2.java}
+import java.util.Scanner;
+
+public class AgeName2 {
+
+    public static void main(String[] args) {
+        String name;
+        int age;
+        Scanner in = new Scanner(System.in);
+        System.out.print("What is your age? ");
+        age = in.nextInt();
+        in.nextLine();
+        System.out.print("What is your name? ");
+        name = in.nextLine();
+        System.out.printf("Hello %s, age %d\n",name,age);
+    }
+}
+\end{trinket}
+%slr: end 8-13-19
 
 This technique is common when reading \java{int} or \java{double} values that appear on their own line.
 First you read the number, and then you read the rest of the line, which is just a newline character.
@@ -719,9 +845,6 @@ The string in \java{System.out.printf} that specifies the format of the output.
 \term{format specifier}
 A special code that begins with a percent sign and specifies the data type and format of the corresponding value.
 
-\term{stack trace}
-An error message that shows the methods that were running when an exception occurs.
-
 \term{type cast}
 An operation that explicitly converts one data type into another.
 In Java it appears as a type name in parentheses, like \java{(int)}.
@@ -732,10 +855,10 @@ In Java it appears as a type name in parentheses, like \java{(int)}.
 
 \term{modulo}
 An operation that yields the remainder when one integer is divided by another.
-In Java, it is denoted with a percent sign: \java{5 \% 2} is \java{1}.
+In Java, it is denoted with a percent sign: \java{5 % 2} is \java{1}.
 
 \term{modulus}
-The value of \java{b} in the expression \java{a \% b}.
+The value of \java{b} in the expression \java{a % b}.
 It often represents unit conversions, such as 24 hours in a day, 60 minutes in an hour, etc.
 
 \end{description}
@@ -754,8 +877,8 @@ It describes the command-line interface, which is a powerful and efficient way t
 \begin{exercise}  %%V6 Ex3.1
 
 When you use \java{printf}, the Java compiler does not check your format string.
-See what happens if you try to display a value with type \java{int} using \java{\%f}.
-And what happens if you display a \java{double} using \java{\%d}?
+See what happens if you try to display a value with type \java{int} using \java{%f}.
+And what happens if you display a \java{double} using \java{%d}?
 What if you use two format specifiers, but then only provide one value?
 
 \end{exercise}
@@ -767,19 +890,12 @@ What if you use two format specifiers, but then only provide one value?
 
 Write a program that converts a temperature from Celsius to Fahrenheit.
 It should (1) prompt the user for input, (2) read a \java{double} value from the keyboard, (3) calculate the result, and (4) format the output to one decimal place.
+For example, it should display {\tt "24.0 C = 75.2 F"}.
 
-When it's finished, it should work like this:
-
-\begin{verbatim}
-Enter a temperature in Celsius: 24
-24.0 C = 75.2 F
-\end{verbatim}
-
-Here is the formula to do the conversion:
+Here is the formula.
+Be careful not to use integer division!
 %
 \[ F = C \times \frac{9}{5} + 32 \]
-%
-HINT: Be careful not to use integer division!
 
 \end{exercise}
 
@@ -799,7 +915,7 @@ For example, {\tt "5000 seconds = 1 hours, 23 minutes, and 20 seconds"}.
 \label{guess}
 
 The goal of this exercise is to program a ``Guess My Number'' game.
-When it's finished, it should work like this:
+When it's finished, it will work like this:
 
 \begin{stdout}
 I'm thinking of a number between 1 and 100

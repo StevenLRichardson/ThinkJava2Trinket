@@ -163,41 +163,87 @@ After these statements run, \java{upperName} refers to the string \java{"ALAN TU
 But \java{name} still refers to \java{"Alan Turing"}.
 A common mistake is to assume that \java{toUpperCase} somehow affects the original string:
 
-\begin{code}
-String name = "Alan Turing";
-name.toUpperCase();           // ignores the return value
-System.out.println(name);
-\end{code}
+%slr: 12-12-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {ImmutableString1.java}
+public class ImmutableString1 {
+
+    public static void main(String[] args) {
+       String name = "Alan Turing";
+       name.toUpperCase();           // ignores the return value
+       System.out.println(name);
+    }
+}
+\end{trinket}
+%\begin{code}
+%String name = "Alan Turing";
+%name.toUpperCase();           // ignores the return value
+%System.out.println(name);
+%\end{code}
+%slr: end 12-12-19
 
 The previous code displays \java{"Alan Turing"}, because the value of \java{name}, which refers to the original \java{String} object, never changes.
 If you want to change \java{name} to be uppercase, then you need to assign the return value:
 
-\begin{code}
-String name = "Alan Turing";
-name = name.toUpperCase();    // references the new string
-System.out.println(name);
-\end{code}
+%slr: 12-12-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {ImmutableString2.java}
+public class ImmutableString2 {
+
+    public static void main(String[] args) {
+       String name = "Alan Turing";
+       name = name.toUpperCase();           // references the new string
+       System.out.println(name);
+    }
+}
+\end{trinket}
+
+%\begin{code}
+%String name = "Alan Turing";
+%name = name.toUpperCase();    // references the new string
+%System.out.println(name);
+%\end{code}
+In the above trinket, the \java{String} object that \java{name} referenced is \textit{replaced} at line 5 with a referemce to a \textbf{new} \java{String} - the \java{String} returned by \java{toUpperCase()}.
 
 \index{replace}
 
 A similar method is \java{replace}, which finds and replaces instances of one string within another.
 This example replaces \java{"Computer Science"} with \java{"CS"}:
 
-\begin{code}
-String text = "Computer Science is fun!";
-text = text.replace("Computer Science", "CS");
-\end{code}
+%slr: 12-12-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {Replace.java}
+public class Replace {
+
+    public static void main(String[] args) {
+       String text = "Computer Science is fun!";
+       text = text.replace("Computer Science", "CS"); //store result of replace into text
+       System.out.println(text);
+    }
+}
+\end{trinket}
+%\begin{code}
+%String text = "Computer Science is fun!";
+%text = text.replace("Computer Science", "CS");
+%\end{code}
+%slr: end 12-12-19
 
 %This example demonstrates a common way to work with string methods.
 %It invokes \java{text.replace}, which returns a reference to a new string, \java{"CS is fun!"}.
 %Then it assigns the new string to \java{text}, replacing the old string.
 
 As with \java{toUpperCase}, assigning the return value (to \java{text}) is important.
-If you don't assign the return value, invoking \java{text.replace} has no effect.
+If you don't assign the return value, the new \java{String} produced by the call is effectively abandoned - created on the heap but never assigned to any \java{String} object it is orphaned and will be deleted eventually by the Java runtime system.
 
 Strings are immutable by design, because it simplifies passing them as parameters and return values.
 And since the contents of a string can never change, two variables can reference the same string without one accidentally corrupting the other.
 
+%slr: 12-12-19
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket \java{ImmutableString1} so that it stores the result of invoking \java{name.toUpperCase()} into a \java{String} object hamed \java{upper} and prints the result.
+\end{enumerate}
+%slr: end 12-12-19
 
 \section{Wrapper Classes}
 
@@ -218,26 +264,62 @@ System.out.println(i.equals(5));  // compiler error
 But for each primitive type, there is a corresponding {\bf wrapper class} in the Java library.
 The wrapper class for \java{int} is named \java{Integer}, with a capital \java{I}.
 
-\begin{code}
-Integer i = Integer.valueOf(5);
-System.out.println(i.equals(5));  // displays true
-\end{code}
+Here is a short example:
+
+%slr: 12-12-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [230] {Integer1.java}
+public class Integer1 {
+
+    public static void main(String[] args) {
+       Integer i = new Integer(5);
+       System.out.println(i.equals(5));
+    }
+}
+\end{trinket}
+%\begin{code}
+%Integer i = Integer.valueOf(5);
+%System.out.println(i.equals(5));  // displays true
+%\end{code}
+
+Predict the output, and then run the trinket to see if you were correct.
+%slr: end 12-12-19
 
 Other wrapper classes include \java{Boolean}, \java{Character}, \java{Double}, and \java{Long}.
 They are in the \java{java.lang} package, so you can use them without importing them.
 
 Like strings, objects from wrapper classes are immutable, and you have to use the \java{equals} method to compare them.
 
-\begin{code}
-Integer x = Integer.valueOf(123);
-Integer y = Integer.valueOf(123);
-if (x == y) {                     // false
-    System.out.println("x and y are the same object");
+%slr: 12-12-19
+% height = 130 + 11 * num_lines
+\begin{trinket} [300] {Integer2.java}
+public class Integer2 {
+
+    public static void main(String[] args) {
+       Integer x = new Integer(123);
+       Integer y = new Integer(123);
+       if (x == y) {                     // false
+          System.out.println("x and y are the same object");
+       }
+       if (x.equals(y)) {                // true
+          System.out.println("x and y have the same value");
+       }
+    }
 }
-if (x.equals(y)) {                // true
-    System.out.println("x and y have the same value");
-}
-\end{code}
+\end{trinket}
+%\begin{code}
+%Integer x = Integer.valueOf(123);
+%Integer y = Integer.valueOf(123);
+%if (x == y) {                     // false
+%    System.out.println("x and y are the same object");
+%}
+%if (x.equals(y)) {                // true
+%    System.out.println("x and y have the same value");
+%}
+%\end{code}
+
+Predict the output, and then run the trinket to see if you were correct.
+%slr: end 12-12-19
 
 Because \java{x} and \java{y} refer to different objects, this code only displays ``x and y have the same value''.
 
@@ -250,33 +332,71 @@ Because these constants are available in wrapper classes, you don't have to reme
 Wrapper classes also provide methods for converting strings to and from primitive types.
 For example, \java{Integer.parseInt} converts a string to an \java{int}.
 In this context, {\bf parse} means ``read and translate''.
-
-\begin{code}
-String str = "12345";
-int num = Integer.parseInt(str);
-\end{code}
+%slr:  12-15-19
+%\begin{code}
+%String str = "12345";
+%int num = Integer.parseInt(str);
+%\end{code}
+%slr: end 12-15-19
 
 Other wrapper classes provide similar methods, like \java{Double.parseDouble} and \java{Boolean.parseBoolean}.
 They also provide \java{toString}, which returns a string representation of a value:
 
-\begin{code}
-int num = 12345;
-String str = Integer.toString(num);
-\end{code}
+%slr: 12-15-19
+%\begin{code}
+%int num = 12345;
+%String str = Integer.toString(num);
+%\end{code}
+%
+%The result is the \java{String} object \java{"12345"}.
 
-The result is the \java{String} object \java{"12345"}.
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [300] {ParseAndToString.java}
+public class ParseAndToString {
+
+    public static void main(String[] args) {
+    
+       //convert String to int:
+       String str = "12345";
+       int num = Integer.parseInt(str);
+       System.out.printf("parse result is %d\n", num); //print int variable
+       //convert int to String:
+       num = 12345;
+       str = Integer.toString(num);
+       System.out.printf("parse result is %s\n", str); //print String object
+    }
+}
+\end{trinket}
+
+Run the trinket and see what you get.
+%slr: end 12-15-19
 
 \index{NumberFormatException}
 \index{exception!NumberFormat}
 
 It's always possible to convert a primitive value to a string, but not the other way around.  For example, if we try to parse an invalid string like this:
+%slr: 12-15-19
+%\begin{code}
+%String str = "five";
+%int num = Integer.parseInt(str);  // NumberFormatException
+%\end{code}
 
-\begin{code}
-String str = "five";
-int num = Integer.parseInt(str);  // NumberFormatException
-\end{code}
+% height = 130 + 11 * num_lines
+\begin{trinket} [210] {NumberFormatExceptionError.java}
+public class NumberFormatExceptionError {
+
+    public static void main(String[] args) {
+       String str = "five";
+       int num = Integer.parseInt(str);  // NumberFormatException
+    }
+}
+\end{trinket}
+
+a run-time exception will occur. Run the trinket to see what happens.
 
 \java{parseInt} throws a \java{NumberFormatException}, because the characters in the string \java{"five"} are not digits.
+%slr: end 12-15-19
 
 
 \section{Command-Line Arguments}
@@ -287,7 +407,17 @@ int num = Integer.parseInt(str);  // NumberFormatException
 Now that you know about strings, arrays, and wrapper classes, we can {\em finally} explain the \java{args} parameter of the \java{main} method, which we have been ignoring since Chapter~\ref{theway}.
 If you are unfamiliar with the command-line interface, please read Appendix~\ref{commandline}.
 
-Let's write a program to find the maximum value in a sequence of numbers.
+%slr: 12-15-19
+Here is a \java{main} method:
+\begin{code}
+public static void main(String[] args) {
+   //statements makin up the main method
+}
+\end{code}
+
+So \java{main} is a \java{public static void} method which means it returns nothing (and is public and static). It has a single input paramenter named \java{args} of type \java{String []}.  So \java{args} is an array of \java{String}.  Where does this array of \java{String} come from?  The command line.
+
+As an example let's write a program to find the maximum value in a sequence of numbers.
 Rather than read the numbers from \java{System.in} using a \java{Scanner}, we'll pass them as command-line arguments.
 Here is a starting point:
 
@@ -327,9 +457,12 @@ The output is:
 [10, -3, 55, 0, 14]
 \end{stdout}
 
+These values were passed as part of the command line above which invokes the \java{main} method of class \java{Max}.
+
 It's not clear from the output, but the elements of \java{args} are strings.
-So \java{args} is the array \java{\{"10", "-3", "55", "0", "14"\}}.
-To find the maximum number, we have to convert the arguments to integers.
+So \java{args} is the array \java{{"10", "-3", "55", "0", "14"}}.
+
+Back to our task of finding the maximum number: to do so we have to convert the \java{String} arguments to integers.
 
 The following code uses an enhanced \java{for} loop (see Section~\ref{enhanced}) to parse the arguments and find the largest value:
 
@@ -360,6 +493,47 @@ if (args.length == 0) {
 
 It's customary for programs that require command-line arguments to display a ``usage'' message if the arguments are not valid.
 For example, if you run {\tt javac} or {\tt java} from the command line without any arguments, you will get a very long message.
+
+%slr: 12-16-19
+Here is a complete example. The trinket envirionment does not allow us to specify command-line parameters which populate the \java{args String} array with values, so we do so manually.  (We are abusing our input parameter a bit here!)
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [400] {Max.java}
+//determine the maximum value of the command-line arguments
+public class Max {
+    
+    public static void main(String[] args) {
+       //populate the args array with values:
+       //simulate receiving command-line arguments
+       String[] temp = {"1", "2", "3", "4"};
+       args = temp;
+       if (args.length == 0) {
+          System.err.println("Usage: java Max <numbers>");
+          return; //outta here!
+       }
+       //find and report largest command-line argument value
+       int max = Integer.MIN_VALUE;
+       for (String arg : args) {
+          int value = Integer.parseInt(arg);
+          if (value > max) {
+             max = value; //'high water mark' algorithm
+          }
+       }
+       System.out.println("The max is " + max);
+    }
+}
+\end{trinket}
+
+Run the trinket to make sure it is working properly.
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket \java{Max} to test that it works correctly with no command-line arguments supplied.  You will have to remove (or comment out) the statements that simulate receiving command-line arguments.
+\item True or false?: Even even if no command-line arguments are received, args is never \java{null}.
+\item What happens if your simulated user (who supplies the command-line arguments) provides one or more values that are not parsable as \java{int} values?  Modify the trinket to test and see.
+\item Draw a memory diagram (refer to figures 9.1, 9.2, 9.3 and 9.4) of the \java{String} arrays \java{temp} and \java{args} after the statement \java{args = temp}.
+\end{enumerate}
+
 
 
 \section{Argument Validation}
@@ -443,8 +617,40 @@ if (str.isEmpty() || str == null) {    // wrong!
 \index{short circuit}
 
 Checking for \java{null} first prevents the \java{NullPointerException}.
-If \java{str} is \java{null}, the \java{||} operator will short circuit (see Section~\ref{shortcircuit}) and evaluate to \java{true} immediately.
+If \java{str} is \java{null}, the \java{||} operator will \textit{short circuit} and evaluate to \java{true} immediately.
 As a result, \java{str.isEmpty()} will not be called.
+
+%slr: 12-12-19
+Here is a complete example:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [400] {ArgumentValidation.java}
+public class ArgumentValidation {
+
+    public static boolean isCapitalized(String str) {
+       if (str == null || str.isEmpty()) {
+          return false;
+       } else {
+          return Character.isUpperCase(str.charAt(0));
+       }
+    }
+    
+    public static void main(String[] args) {
+       String name = null;
+       System.out.println(isCapitalized(name));
+    }
+}
+\end{trinket}
+
+Predict what the output will be, then run it to see if you were right.
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the trinket \java{ArgumentValidation} to test that it works correctly with an empty \java{String}.
+\item Modify the trinket \java{ArgumentValidation} to test that it works correctly with a non-empty \java{String} with a non-capitalized first character.
+\item Modify the trinket \java{ArgumentValidation} to test that it works correctly with a non-empty \java{String} with a capitalized first character.
+\end{enumerate}
+%slr: end 12-16-19
 
 
 \section{BigInteger Arithmetic}
@@ -487,14 +693,31 @@ Notice the difference in the previous two examples: you use \java{valueOf} to co
 Since BigIntegers are not primitive types, the usual math operators don't work.
 Instead, we have to use methods like \java{add}.
 To add two BigIntegers, we invoke \java{add} on one and pass the other as an argument.
+%slr: 12-15-19
+Here is an example:
+% height = 130 + 11 * num_lines
+\begin{trinket} [400] {UsingBigInteger.java}
+import java.math.BigInteger;
+public class UsingBigInteger {
+    public static void main(String[] args) {
+    
+       BigInteger a = BigInteger.valueOf(17);
+       BigInteger b = new BigInteger("1700000000");
+       BigInteger c = a.add(b);
+       System.out.println(c);
+    }
+}
+\end{trinket}
+%\begin{code}
+%BigInteger a = BigInteger.valueOf(17);
+%BigInteger b = BigInteger.valueOf(1700000000);
+%BigInteger c = a.add(b);
+%\end{code}
 
-\begin{code}
-BigInteger a = BigInteger.valueOf(17);
-BigInteger b = BigInteger.valueOf(1700000000);
-BigInteger c = a.add(b);
-\end{code}
+Run the trinket to see what is output.
+%slr: end 12-15-19
 
-Like strings, \java{BigInteger} objects are immutable.
+Like \java{String}s, \java{BigInteger} objects are immutable.
 Methods like \java{add}, \java{multiply}, and \java{pow} all return new BigIntegers, rather than modify an existing one.
 
 Internally, a BigInteger is implemented using an array of \java{int}s, similar to the way a string is implemented using an array of \java{char}s.
@@ -507,6 +730,7 @@ Interestingly, \java{BigDecimal} objects represent floating-point numbers intern
 % ABD: I think explaining the implementation here is a good idea.
 % The level of detail is appropriate, and it explains what might
 % otherwise seem like magic.
+% slr: I agree.
 
 
 \section{Incremental Design}
@@ -699,18 +923,64 @@ As a result, the number of columns equals the number of rows, so we get a square
 %   7  14  21  28  35  42  49
 %\end{stdout}
 
-When you generalize a method appropriately, you often find that it has capabilities you did not plan.
+%slr:  12-16-19
+Here is a complete program demonstrating this generalization:
+% height = 130 + 11 * num_lines
+\begin{trinket} [400] {MultTable.java}
+public class MultTable {
+    public static void printRow(int n, int cols) {
+       for (int i = 1; i <= cols; i++) {
+          System.out.printf("%4d", n * i);
+       }
+       System.out.println();
+    }
+    
+    public static void printTable(int rows) {
+       for (int i = 1; i <= rows; i++) {
+          printRow(i, rows);
+       }
+    }
+    
+    public static void main(String[] args) {
+       printTable(7);
+    }
+}
+\end{trinket}
+
+Predict the output of the trinket and then run it to see if you were correct.
+
+
+%When you generalize a method appropriately, you often find that it has capabilities you did not plan.
+%For example, you might notice that the multiplication table is symmetric.
+%Since $ab = ba$, all the entries in the table appear twice.
+%You could save ink by printing half of the table, and you would only have to change {\em one line} of \java{printTable}:
+%
+%\begin{code}
+%printRow(i, i);  // using i for both n and cols
+%\end{code}
+%
+%This means the length of each row is the same as its row number.
+%The result is a triangular multiplication table.
+%
+%\begin{stdout}
+%   1
+%   2   4
+%   3   6   9
+%   4   8  12  16
+%   5  10  15  20  25
+%   6  12  18  24  30  36
+%   7  14  21  28  35  42  49
+%\end{stdout}
+
+Generalization makes code more versatile, more likely to be reused, and sometimes easier to write.
+
+
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item When you generalize a method appropriately, you often find that it has capabilities you did not plan.
 For example, you might notice that the multiplication table is symmetric.
 Since $ab = ba$, all the entries in the table appear twice.
-You could save ink by printing half of the table, and you would only have to change {\em one line} of \java{printTable}:
-
-\begin{code}
-printRow(i, i);  // using i for both n and cols
-\end{code}
-
-This means the length of each row is the same as its row number.
-The result is a triangular multiplication table.
-
+You could save ink by printing half of the table:
 \begin{stdout}
    1
    2   4
@@ -720,8 +990,9 @@ The result is a triangular multiplication table.
    6  12  18  24  30  36
    7  14  21  28  35  42  49
 \end{stdout}
-
-Generalization makes code more versatile, more likely to be reused, and sometimes easier to write.
+Modify the trinket so as to produce this result. (You should only have to change \textit{one line}!)
+\end{enumerate}
+%slr: end 12-16-19
 
 %In this example, we started with a simple idea and ended with two general-purpose methods.
 

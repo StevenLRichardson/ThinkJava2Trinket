@@ -20,9 +20,10 @@
 
 \newcommand{\href}{\ahref}
 
-\htmlhead{\rawhtmlinput{hevea/header.html}}
+%commented out slr 5/24/19 in an effort to get header and footer stuff out of rendered html
+%\htmlhead{\rawhtmlinput{hevea/header.html}}
 
-\htmlfoot{\rawhtmlinput{hevea/footer.html}}
+%\htmlfoot{\rawhtmlinput{hevea/footer.html}}
 
 % these styles get translated into CSS
 \newstyle{p+p}{margin-top:1em; margin-bottom:1em;}
@@ -59,7 +60,8 @@
 
 % code listing environments
 \lstnewenvironment{code}
-{}
+{\lstset{numbers=left}\minipage{\linewidth}}
+{\endminipage}
 {}
 \lstnewenvironment{stdout}
 {\lstset{commentstyle=\relax,keywordstyle=\relax,stringstyle=\relax}}

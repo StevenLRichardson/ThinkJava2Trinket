@@ -1,23 +1,17 @@
-# ThinkJava2
-LaTeX source for Think Java, 2nd edition. Copyright (c) 2019 Allen Downey and Chris Mayfield. **This new edition is a work in progress and won't be completed until Fall 2019.**
+# ThinkJava2Trinket
+LaTeX source for an Adapted/Augmented version of _Think Java 2_ by Chris Mayfield and Allen Downey.  Their work, Copyright (c) 2019, is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.  See http://greenteapress.com/wp/think-java-2e/.
 
-Permission is granted to copy, distribute, and/or modify this work under the terms of the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, which is available at https://creativecommons.org/licenses/by-nc-sa/4.0/.
+Copyright (c) 2020 Steven L. Richardson. This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.  Readers are free to copy and distribute the text, and are also free to modify it provided they cite the original authors, use it only for non-commercial purposes, and apply the same Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License to their work.
 
-The original form of this book is the LaTeX source code available from http://greenteapress.com/wp/think-java-2e/ and https://github.com/ChrisMayfield/ThinkJava2.
+This is a work in progress. Expected completion is Spring 2020.
 
-The illustrations were drawn using xfig (http://www.xfig.org/) and dia (https://wiki.gnome.org/Apps/Dia/). These tools are free and open-source.
+Build scripts and trinket hosting provided by Elliott Hauser of Trinket.io. See https://trinket.io/.  Scripts and/or supporting files modified and used under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
-Compiling the LaTeX source has the effect of generating a device-independent representation of the book, which can be converted to other formats and printed.
+The Makefile will build pdf, html, or trinket-html versions of the text.  The author has adapted the original work for use in an online class, intended as an html-based trail through the material supported with inline trinkets and inline exercises for readers to investigate via the trinkets.  As such, the pdf and (non-trinket) html versions of this text are not useful as they would refer the reader to absent trinkets.
 
-To compile the PDF version from source:
+To build the trinket-html version of the text, invoke the Makefile as follows:
+<p><code>
+  make trinket
+</code>
 
-    pdflatex thinkjava2.tex
-    pdflatex thinkjava2.tex
-    pdflatex thinkjava2.tex
-
-The source code includes a Makefile that automates this process. On Linux, you may need to install texlive-latex-extra and texlive-fonts-recommended.
-
-To build the HTML versions, the hevea package is required. Use the Makefile as follows:
-
-    make hevea    # static html
-    make trinket  # interactive
+This requires the hevea package.  You may also need to install texlive-latex-extra and texlive-fonts-recommended.

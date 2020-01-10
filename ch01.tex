@@ -1,4 +1,4 @@
-\chapter{Computer Programming}
+\chapter{Computer programming}
 \label{theway}
 
 The goal of this book is to teach you to think like a computer scientist.
@@ -18,13 +18,13 @@ But on another level you will use programming as a means to an end.
 As we go along, that end will become clearer.
 
 
-\section{What Is a Computer?}
+\section{What is a computer?}
 
-When people hear the word computer, they often think of a desktop or laptop.
-Not surprisingly, searching for ``computer'' on \url{https://images.google.com/} displays rows and rows of these types of machines.
+Usually when people hear the word computer, they think of a desktop or laptop.
+Not surprisingly, searching for ``computer'' on \href{https://images.google.com/}{\tt images.google.com} displays rows and rows of these types of machines.
 However, in a more general sense, a computer can be any type of device that stores and processes data.
 
-Dictionary.com defines a computer as ``a programmable electronic device designed to accept data, perform prescribed mathematical and logical operations at high speed, and display the results of these operations.
+\href{http://www.dictionary.com/browse/computer}{\tt Dictionary.com} defines a computer as ``a programmable electronic device designed to accept data, perform prescribed mathematical and logical operations at high speed, and display the results of these operations.
 Mainframes, desktop and laptop computers, tablets, and smartphones are some of the different types of computers.''
 
 \index{hardware}
@@ -53,7 +53,7 @@ Users generally see and interact with touchscreens, keyboards, and monitors, but
 Nowadays it's fairly standard, even for a smartphone, to have at least eight processors and four gigabytes (four billion cells) of memory.
 
 
-\section{What Is Programming?}
+\section{What is programming?}
 
 \index{program}
 
@@ -67,7 +67,7 @@ The details look different in different languages, but a few basic instructions 
 \item[input:] Get data from the keyboard, a file, a sensor, or some other device.
 \item[output:] Display data on the screen, or send data to a file or other device.
 \item[math:] Perform basic mathematical operations like addition and division.
-\item[decision:] Check for certain conditions and execute the appropriate code.
+\item[decisions:] Check for certain conditions and execute the appropriate code.
 \item[repetition:] Perform some action repeatedly, usually with some variation.
 \end{description}
 
@@ -79,7 +79,7 @@ So you can think of {\bf programming} as the process of breaking down a large, c
 The process continues until the subtasks are simple enough to be performed with the electronic circuits provided by the hardware.
 
 
-\section{The Hello World Program}
+\section{The hello world program}
 \label{hello}
 
 Traditionally, the first program you write when learning a new programming language is called the hello world program.
@@ -103,13 +103,14 @@ public class Hello {
 }
 \end{trinket}
 
-When this program runs it displays:
+Run it and see what it dispays.  You should see
 
 \begin{stdout}
 Hello, World!
 \end{stdout}
 
 Notice that the output does not include the quotation marks.
+
 
 %\index{public}
 %\index{static}
@@ -120,12 +121,13 @@ Notice that the output does not include the quotation marks.
 %In fact, we won't be able to explain all of them for several more chapters.
 %But we can start with the structure.
 
+
 \index{statement}
 \index{print statement}
 
 Java programs are made up of {\em class} and {\em method} definitions, and methods are made up of {\em statements}.
 A {\bf statement} is a line of code that performs a basic action.
-In the hello world program, this line is a {\bf print statement} that displays a message to the user:
+In the hello world program, this line is a {\bf print statement} that displays a message on the screen:
 
 \begin{code}
 System.out.println("Hello, World!");
@@ -143,7 +145,7 @@ Like most statements, the print statement ends with a semicolon (\java{;}).
 \index{case-sensitive}
 
 Java is ``case-sensitive'', which means that uppercase and lowercase are not the same.
-In the hello world program, \java{System} has to begin with an uppercase letter; \java{system} and \java{SYSTEM} won't work.
+In this example, \java{System} has to begin with an uppercase letter; \java{system} and \java{SYSTEM} won't work.
 
 \index{method}
 
@@ -161,8 +163,8 @@ Later, we will see programs that define more than one method.
 
 \index{class}
 
+A {\bf class} is a collection of methods.
 This program defines a class named \java{Hello}.
-For now, a {\bf class} is a collection of methods; we'll have more to say about this later.
 You can give a class any name you like, but it is conventional to start with a capital letter.
 The name of the class has to match the name of the file it is in, so this class has to be in a file named {\tt Hello.java}.
 
@@ -170,7 +172,7 @@ The name of the class has to match the name of the file it is in, so this class 
 \index{brackets!curly}
 
 Java uses curly braces (\{ and \}) to group things together.
-In {\tt Hello.java}, the outermost braces contain the class definition, and the inner braces contain the method definition.
+In {\tt Hello.java}, the outermost braces contain the {\em class definition}, and the inner braces contain the {\em method definition}.
 
 \index{comment!end-of-line}
 \index{statement!comment}
@@ -180,7 +182,7 @@ When Java sees \java{//}, it ignores everything from there until the end of the 
 Comments have no effect on the execution of the program, but they make it easier for other programmers (and your future self) to understand what you meant to do.
 
 
-\section{Compiling Java Programs}
+\section{Compiling Java programs}
 
 \index{high-level language}
 \index{language!high-level}
@@ -203,7 +205,7 @@ Programs take less time to write, they are shorter and easier to read, and they 
 \index{portable}
 
 \item High-level languages are {\bf portable}, meaning they can run on different kinds of computers with few or no modifications.
-Low-level programs can only run on one kind of computer. %, and have to be rewritten to run on another.
+Low-level programs can only run on one kind of computer, and have to be rewritten to run on another.
 
 \end{itemize}
 
@@ -212,7 +214,6 @@ Low-level programs can only run on one kind of computer. %, and have to be rewri
 Two kinds of programs translate high-level languages into low-level languages: interpreters and compilers.
 An {\bf interpreter} reads a high-level program and executes it, meaning that it does what the program says.
 It processes the program a little at a time, alternately reading lines and performing computations.
-%Python and JavaScript are examples of interpreted languages.
 Figure~\ref{fig.interpreter} shows the structure of an interpreter.
 
 \begin{figure}[!ht]
@@ -229,32 +230,41 @@ Figure~\ref{fig.interpreter} shows the structure of an interpreter.
 \index{executable}
 
 In contrast, a {\bf compiler} reads the entire program and translates it completely before the program starts running.
-In this context, the high-level program is called the {\bf source code}.
-The translated program is called the {\bf object code} or the {\bf executable}.
+In this context, the high-level program is called the {\bf source code}. The translated program is called the {\bf object code} or the {\bf executable} and is stored by the compiler for execution.
 Once a program is compiled, you can execute it repeatedly without further translation.
 As a result, compiled programs often run faster than interpreted programs.
+%%begin slr:
 
-Note that object code, as a low-level language, is not portable.
-You cannot run an executable compiled for a Windows laptop on an Android phone, for example.
-In order to run a program on different types of machines, it must be compiled multiple times.
-It can be difficult to write source code that compiles and runs correctly on different types of machines.
+Compiled programs are portable because on each different machine the compiler translates the source code into the particular machine's object code.  But if you want to move a program from machine A to machine B, you need to recompile it on machine B.  The object code for machine A will not (in general) run on machine B.
 
-\index{byte code}
 \index{virtual machine}
+\index{byte code}
+Java addresses the need to recompile on different machines by compiling code for a \textbf{virtual machine}.  This imaginary machine's object code is called \textbf{byte code}.
 
-To address this issue, Java is {\em both} compiled and interpreted.
-Instead of translating source code directly into an executable, the Java compiler generates code for a \textbf{virtual machine}.
-This ``imaginary'' machine has the functionality common to desktops, laptops, tablets, phones, etc.
-Its language, called Java \textbf{byte code}, looks like object code and is easy and fast to interpret.
+How does this virtual machine's byte code get translated to the correct code for the machine we want to run our program on?  The answer is an interpreter, but this time a very simple one that translates java byte code to local object code, a nearly one-for-one translation which is fast.
+
+Where is this interpreter?  Each installation of java on a particular machine includes the \textbf{java virtual machine} or JVM.  Compiled java programs are stored as instructions for the virtual machine, and when the JVM 'executes' these instructions they are interpreted into the local machine's language and executed.
+
+
+
+%\index{byte code}
+%
+%Java is {\em both} compiled and interpreted.
+%Instead of translating programs directly into machine language, the Java compiler generates {\bf byte code}.
+%Similar to object code, byte code is easy and fast to interpret.
+%But it is also portable, so it is possible to compile a Java program on one machine, transfer the byte code to another machine, and run the byte code on the other machine.  This is because the byte code is locally translated to machine-native language. This ability is an advantage of Java over some other high-level languages.
+%%%slr end
 
 \index{javac}
+\index{virtual machine}
 \index{JVM}
 
-As a result, it's possible to compile a Java program on one machine, transfer the byte code to another machine, and run the byte code on the other machine.
 Figure~\ref{fig.compiler} shows the steps of the development process.
-The Java compiler is a program named {\tt javac}.
-It translates {\tt .java} files into {\tt .class} files that store the resulting byte code.
-The Java interpreter is another program, named {\tt java}, which is short for ``Java Virtual Machine'' (JVM).
+%%begin slr:
+%The Java compiler is a program named {\tt javac}.
+%It translates {\tt .java} files into {\tt .class} files that store the resulting byte code.
+%The Java interpreter is a program named {\tt java}, which is short for ``Java Virtual Machine'' (JVM).  It translates byte-code into local executable code.
+%%slr end
 
 \begin{figure}[!ht]
 \begin{center}
@@ -264,21 +274,24 @@ The Java interpreter is another program, named {\tt java}, which is short for ``
 \end{center}
 \end{figure}
 
-The programmer writes source code in the file {\tt Hello.java} and uses {\tt javac} to compile it.
+%%begin slr (some changes in this paragraph)
+The programmer writes source code in the file {\tt Hello.java} and uses the java compiler {\tt javac} to compile it.
 If there are no errors, the compiler saves the byte code in the file {\tt Hello.class}.
-To run the program, the programmer uses {\tt java} to interpret the byte code.
+To run the program, the programmer uses the java vritual machine {\tt java} to interpret the byte code.
 The result of the program is then displayed on the screen.
+%%slr end
 
-Although it might seem complicated, these steps are automated for you in most development environments.
-Usually you only have to press a button or type a single command to compile and interpret your program.
+Although it might seem complicated, these steps are automated for you in most program development environments.
+Usually you only have to press a button or type a single command to compile and run your program.
 On the other hand, it is important to know what steps are happening in the background, so if something goes wrong you can figure out what it is.
 
 
-\section{Displaying Two Messages}
+\section{Displaying two messages}
 
 You can put as many statements as you like in the \java{main} method.
 For example, to display more than one line of output:
 
+% height = 130 + 15 * num_lines
 \begin{trinket}[250]{Hello2.java}
 public class Hello2 {
 
@@ -290,7 +303,7 @@ public class Hello2 {
 }
 \end{trinket}
 
-As this example also shows, you can put comments at the end of a line as well as on lines all by themselves.
+As this example shows, you can put comments at the end of a line as well as on lines all by themselves.
 
 \index{quote mark}
 \index{string}
@@ -309,6 +322,7 @@ If you don't want a newline at the end, you can use \java{print} instead of \jav
 
 \index{Goodbye.java}
 
+% height = 130 + 15 * num_lines
 \begin{trinket}[235]{Goodbye.java}
 public class Goodbye {
 
@@ -321,22 +335,33 @@ public class Goodbye {
 
 \label{goodbye}
 
-In this example, the first statement does not add a newline, so the output appears on a single line:
+%%begin slr:
+Run this example and see what it produces.
+%%slr end
 
-\begin{stdout}
-Goodbye, cruel world
-\end{stdout}
+The first statement does not add a newline, so the output appears on a single line as {\tt Goodbye, cruel world}.
+Notice that there is a space at the end of the first string, which appears in the output just before the word cruel.
 
-Notice that there is a space at the end of the first string, which appears in the output just before the word {\tt cruel}.
+%%begin slr:
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Predict what will happen if you omit the space in the string given the {\\tt print}  statement.  Make the change and run the program to see if you were right.
+\item Change where you insert the space between {\tt Goodbye,} and {\tt cruel world}.
+\item Predict what will happen if you replace the print method with another println.  Make the change and run the program to see if you were right.
+\end{enumerate}
+%%slr end
 
 
-\section{Formatting Source Code}
+
+\section{Formatting source code}
 \label{formatting}
 
 In Java source code, some spaces are required.
 For example, you need at least one space between words, so this program is not legal:
 
-\begin{code}
+%%begin slr:
+% height = 130 + 15 * num_lines
+\begin{trinket}[235]{Goodbye.java}
 publicclassGoodbye{
 
     publicstaticvoidmain(String[] args) {
@@ -344,11 +369,14 @@ publicclassGoodbye{
         System.out.println("cruel world");
     }
 }
-\end{code}
+\end{trinket}
+
+Run the program.  What happens?  Do you get an error message?  What is generating it?  Can you interpret it?  (You may want to widen the pane the message is printed in to see it without line wrapping.)
 
 But most other spaces are optional.
 For example, this program {\em is} legal:
 
+% height = 130 + 15 * num_lines
 \begin{trinket}[220]{Goodbye.java}
 public class Goodbye {
 public static void main(String[] args) {
@@ -358,9 +386,12 @@ System.out.println("cruel world");
 }
 \end{trinket}
 
+Try running it.
+
 The newlines are optional, too.
 So we could just write:
 
+% height = 130 + 15 * num_lines
 \begin{trinket}[175]{Goodbye.java}
 public class Goodbye { public static void main(String[] args)
 { System.out.print("Goodbye, "); System.out.println
@@ -368,13 +399,24 @@ public class Goodbye { public static void main(String[] args)
 \end{trinket}
 
 It still works, but the program is getting harder and harder to read.
+
+We could make it all one line:
+
+% height = 130 + 15 * num_lines
+\begin{trinket}[145]{Goodbye.java}
+public class Goodbye { public static void main(String[] args){ System.out.print("Goodbye, ");System.out.println("cruel world");}}
+\end{trinket}
+
+Again, it still works, but now is \emph{really} hard to read.
+%%slr end
+
 Newlines and spaces are important for organizing your program visually, making it easier to understand the program and find errors when they occur.
 
 Many editors will automatically format source code with consistent indenting and line breaks.
 For example, in DrJava (see Appendix~\ref{drjava}) you can indent your code by selecting all text ({\sf Ctrl+A}) and pressing the {\sf Tab} key.
 
 
-%\section{Style Guidelines}
+%\section{Style guidelines}
 
 %\index{whitespace}
 %
@@ -400,33 +442,51 @@ But you might want to refer back to them periodically as you read this book.
 %Instructions for downloading and running Checkstyle are in Appendix~\ref{checkstyle}.
 
 
-\section{Escape Sequences}
+\section{Escape sequences}
 
-It's possible to display multiple lines of output with only one line of code.
-You just have to tell Java where to put the line breaks.
+%%begin slr:
+How could we produce the following output?
 
+\begin{stdout}
+She said "Hello!" to me!
+\end{stdout}
+
+We could try something like this:
+
+% height = 130 + 15 * num_lines
 \begin{trinket}[220]{Hello3.java}
 public class Hello3 {
 
     public static void main(String[] args) {
-        System.out.print("Hello!\nHow are you doing?\n");
+        System.out.print("She said "Hello!" to me!");
     }
 }
 \end{trinket}
 
-The output is two lines, each ending with a newline character:
+Try running it.  Do you see the problem?  The character \java{"} has a special meaning.  It does not mean literally a double quote.  The java compiler interprets it as a \emph{delimiter} - a special character whose meaning is 'this is the beginning of a string' or 'this is the end of a string'.  Each pair of these characters denotes (or delimits) a string.
+
+How can we tell java that we do not want it to interpret the character in this way?  We can {\bf escape} the default meaning of the character \java{"} by preceding it with a backslash  character:
+
+% height = 130 + 15 * num_lines
+\begin{trinket}[220]{Hello4.java}
+public class Hello4 {
+
+    public static void main(String[] args) {
+        System.out.print("She said \"Hello!\" to me!");
+    }
+}
+\end{trinket}
+
+Run this to verify that it produces:
 
 \begin{stdout}
-Hello!
-How are you doing?
+She said "Hello!" to me.
 \end{stdout}
 
 \index{escape sequence}
+The string is delimited with \java{"} characters and contains the {\bf escape sequence} (\verb'\"') which java interprets as 'they mean a literal double quote character, \textbf{not} the beginning or end of a string.'
 
-Each \verb"\n" is an {\bf escape sequence}, or two characters of source code that represent a single character.
-(The backslash allows you to ``escape'' the string to write special characters.)
-Notice there is no space between \verb"\n" and \verb"How".
-If you add a space there, there will be a space at the beginning of the second line.
+Java has a total of eight escape sequences, and the four most commonly used ones are listed in Table~\ref{tab:escape}.
 
 \begin{table}[!ht]
 \begin{center}
@@ -446,31 +506,40 @@ If you add a space there, there will be a space at the beginning of the second l
 \end{center}
 \end{table}
 
-Java has a total of eight escape sequences, and the four most commonly used ones are listed in Table~\ref{tab:escape}.
-For example, to write quotation marks inside of strings, you need to escape them with a backslash.
 
-\begin{code}
-System.out.println("She said \"Hello!\" to me.");
-\end{code}
+Using the newline escape sequence \verb"\n", it's possible to display multiple lines of output with only one line of code.  
 
-The result is:
+% height = 130 + 15 * num_lines
+\begin{trinket}[220]{Hello5.java}
+public class Hello5 {
+
+    public static void main(String[] args) {
+        System.out.print("Hello!\nHow are you doing?\n");
+    }
+}
+\end{trinket}
+
+The output is two lines, each ending with a newline character:
 
 \begin{stdout}
-She said "Hello!" to me.
+Hello!
+How are you doing?
 \end{stdout}
 
+Notice there is no space between \verb"\n" and \verb"How".
+If you add a space there, there will be a space at the beginning of the second line. Try it!
 
-\section{What Is Computer Science?}
+\section{What is computer science?}
 
 This book intentionally omits some details about the Java language (such as the other escape sequences), because our main goal is learning how to think like a computer scientist.
 Being able to understand computation is much more valuable than just learning how to write code.
 
-If you're interested in learning more about Java itself, Oracle maintains an official set of tutorials on their website: \url{https://thinkjava.org/tutorial}.
+If you're interested in learning more about Java itself, Oracle maintains an official set of tutorials on their website: \url{https://docs.oracle.com/javase/tutorial/}.
 The ``Language Basics'' tutorial (found under ``Learning the Java Language'') is a good place to start.
 
 One of the most interesting aspects of writing programs is deciding how to solve a particular problem, especially when there are multiple solutions.
 For example, there are numerous ways to sort a list of numbers, and each way has its advantages.
-%Sorting-algorithms.com provides animations and descriptions for eight of the most common ways.
+%\href{https://www.toptal.com/developers/sorting-algorithms/}{\tt Sorting-algorithms.com} provides animations and descriptions for eight of the most common ways.
 In order to determine which way is best for a given situation, we need techniques for describing and analyzing solutions formally.
 
 \index{algorithm}
@@ -496,7 +565,7 @@ You are confronted with clues, and you have to infer the processes and events th
 Thinking about how to correct programs and improve their performance sometimes even leads to the discovery of new algorithms.
 
 
-\section{Debugging Programs}
+\section{Debugging programs}
 \label{sec:examples}
 
 It is a good idea to read this book in front of a computer so you can try out the examples as you go.
@@ -596,7 +665,7 @@ A programming language that is designed to be easy for humans to read and write.
 
 \term{low-level language}
 A programming language that is designed to be easy for a computer to run.
-Also called ``machine language''. % or ``assembly language''.
+Also called ``machine language'' or ``assembly language''.
 
 \term{portable}
 The ability of a program to run on more than one kind of computer.
@@ -616,12 +685,9 @@ The output of the compiler, after translating the program.
 \term{executable}
 Another name for object code that is ready to run on specific hardware.
 
-\term{virtual machine}
-An emulation of a real machine. The Java Virtual Machine enables a computer to run Java programs.
-
 \term{byte code}
 A special kind of object code used for Java programs.
-Byte code is similar to object code, but it is portable like a high-level language.
+Byte code is similar to a low-level language, but it is portable like a high-level language.
 
 \term{string}
 A sequence of characters; the primary data type for text.

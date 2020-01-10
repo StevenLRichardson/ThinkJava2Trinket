@@ -23,15 +23,20 @@ The \java{Graphics} class provides basic drawing methods such as \java{drawLine}
 
 Here is an example program that draws a circle using the \java{fillOval} method:
 
+%\begin{code}
+%import java.awt.Canvas;
+%import java.awt.Graphics;
+%import javax.swing.JFrame;
+%
+%public class Drawing extends Canvas {
+%\end{code}
+
 \begin{code}
 import java.awt.Canvas;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 
 public class Drawing extends Canvas {
-\end{code}
-
-\begin{code}
     public static void main(String[] args) {
         JFrame frame = new JFrame("My Drawing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
