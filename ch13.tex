@@ -98,6 +98,7 @@ public void print() {
 %\end{code}
 
 Notice that when we transform a static method into an instance method, the code is shorter.
+
 Here's how we invoke it:
 
 \begin{code}
@@ -113,7 +114,7 @@ deck.print();
 For most card games, you have to shuffle the deck; that is, put the cards in a random order.
 In Section~\ref{random} we saw how to generate random numbers, but it is not obvious how to use them to shuffle a deck.
 
-One possibility is to model the way humans shuffle; for example, we could divide the deck in two halves and then choosing alternately from each one.
+One possibility is to model the way humans shuffle; for example, we could divide the deck in two halves and then choose alternately from each one.
 Since humans usually don't shuffle perfectly, after about seven iterations the order of the deck is pretty well randomized.
 
 But a computer program would have the annoying property of doing a perfect shuffle every time, which is not very random.
@@ -158,7 +159,7 @@ private void swapCards(int i, int j) {
 \index{swapCards}
 
 Methods like \java{randomInt} and \java{swapCards} are called {\bf helper methods}, because they help you solve parts of the problem.
-Helper methods are often \java{private}, because they are only used by methods in the class, and are not needed by methods in other classes.
+Helper methods are often \java{private}, because they are only used by methods in the class, and are not needed by client users of the class. Clients need not know about these methods - they are private to the \java{Deck} class.
 
 \index{top-down design}
 \index{design process}
@@ -204,6 +205,10 @@ private int indexLowest(int low, int high) {
 }
 \end{code}
 
+%slr: 1-14-20
+The method \java{indexLowest} is an \textbf{instance} method which means the instance \java{this} is available (in scope).  Thus the \java{Card} array is available inside the method as \java{this.cards}.
+%slr: end 1-14-20
+
 One of the exercises at the end of the chapter asks you to write \java{indexLowest}, and then use it and \java{swapCards} to implement \java{selectionSort}.
 
 
@@ -244,6 +249,8 @@ Then take the remaining cards and add them to the merged deck.
 
 \end{enumerate}
 
+%slr: 1-14-20  maybe embed video?
+
 The result should be a single sorted deck.
 In the next few sections, we'll explain how to implement this algorithm in Java.
 
@@ -266,8 +273,10 @@ public Deck subdeck(int low, int high) {
 }
 \end{code}
 
+%slr: 1-14-20 added last two sentences to paragraph
 The first line creates an unpopulated \java{Deck} object that contains an array of \java{null} references.
-Inside the \java{for} loop, the subdeck gets populated with references to \java{Card} objects.
+Inside the \java{for} loop, the subdeck gets populated with references to \java{Card} objects.  
+The expression \java{sub.cards.length} uses the 'dot operator' to access \java{sub}'s \java{cards} instance variable which yields an array of \java{Card}.  Then, using the dot operator again, we obtain the array's length.
 
 \index{off-by-one}
 
@@ -303,7 +312,7 @@ The result is a hand with five cards that are {\em shared} with the original dec
 \index{aliasing}
 \index{reference}
 
-Aliasing might not be a good idea, because changes to shared cards would be reflected in multiple decks.
+Note that the items of \java{sub} are aliases of corresponding items of \java{cards}. Aliasing might not be a good idea, because changes to shared cards would be reflected in multiple decks.
 But since \java{Card} objects are immutable, this kind of aliasing is not a problem.
 And it saves some memory because we don't create duplicate \java{Card} objects.
 
@@ -331,7 +340,7 @@ private static Deck merge(Deck d1, Deck d2) {
         // otherwise, compare the top two cards
 
         // add lowest card to the new deck at k
-        // increment i or j (depending on card)
+        // increment i or j (depending on deck)
     }
     // return the new deck
 }
@@ -379,20 +388,21 @@ public Deck mergeSort() {
 
 \index{leap of faith}
 
-As usual, there are two ways to think about recursive programs: you can follow the flow of execution, or you can make the ``leap of faith'' (see Section~\ref{leap_of_faith}).
-This example should encourage you to make the leap of faith.
+%slr:  comment out 'leap of faith' and related discussion in next three paragraphs
+%As usual, there are two ways to think about recursive programs: you can follow the flow of execution, or you can make the ``leap of faith'' (see Section~\ref{leap_of_faith}).
+%This example should encourage you to make the leap of faith.
 
-When you use \java{selectionSort} to sort the subdecks, you don't feel compelled to follow the flow of execution.
-You assume it works because you already debugged it.
-When you make \java{mergeSort} recursive, you just replace one sorting algorithm with another.
-There is no reason to read the program differently.
-
-Well, almost.
-You have to think about the base cases and make sure that you reach them.
-But other than that, writing the recursive version should be no problem.
+%When you use \java{selectionSort} to sort the subdecks, you don't feel compelled to follow the flow of execution.
+%You assume it works because you already debugged it.
+%When you make \java{mergeSort} recursive, you just replace one sorting algorithm with another.
+%There is no reason to read the program differently.
+%
+%Well, almost.
+%You have to think about the base cases and make sure that you reach them.
+%But other than that, writing the recursive version should be no problem.
 %The most difficult part of merge sort is the \java{merge} method, and that part is not recursive.
 
-As an exercise at the end of this chapter, you'll have a chance to finish it off.
+%As an exercise at the end of this chapter, you'll have a chance to finish it off.
 
 
 \section{Static Context}
@@ -413,7 +423,7 @@ In UML diagrams, \java{private} attributes and methods begin with a minus sign (
 \end{figure}
 
 The helper methods \java{randomInt} and \java{merge} are \java{static}, because they do not read or write any instance variables.
-All other methods are instance methods, because they access the instance variable, \java{cards}.
+All other methods are instance methods, because they access the instance \java{this} and its instance variable \java{cards}.
 
 When you have static methods and instance methods in the same class, it is easy to get them confused.
 
@@ -455,6 +465,13 @@ int i = deck.randomInt(0, 51);  // legal, but not good style
 \end{code}
 
 This is legal, but it is not considered good style, because someone reading this code would expect \java{randomInt} to be an instance method.
+
+%slr:  1-14-20
+A much more common and better way of accessing static methods if by using the class itself:
+
+\begin{code}
+int i = Deck.randomInt(0, 51);  // invoke static method via the class
+\end{code}
 
 Another common error is to use \java{this} in a static method.
 For example, if you write something like this:
@@ -639,7 +656,7 @@ while (!p1.isEmpty() && !p2.isEmpty()) {
     Card c1 = p1.popCard();
     Card c2 = p2.popCard();
 
-    // compare the cards
+    // compare the cards ignoring suit
     int diff = c1.getRank() - c2.getRank();
     if (diff > 0) {
         p1.addCard(c1);

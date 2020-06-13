@@ -188,9 +188,43 @@ public String toString() {
 \end{code}
 
 When we display a card, \java{println} automatically calls \java{toString}.
-The output of the following code is {\tt Jack of Diamonds}.
+%slr: 1-11-20: 
+%The output of the following code is {\tt Jack of Diamonds}.
 
-%slr:  1-3-20: place trinket here which runs the stuff in this section
+Here is a trinket implemetation of what we have so far:
+% height = 130 + 11 * num_lines
+\begin{trinket} [420] {Card.java}
+public class Card {
+    //class attributes
+    private int rank;
+    private int suit;
+    
+    //default constructor
+    public Card(int rank, int suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
+    
+    //toString() method
+    public String toString() {
+       String[] ranks = {null, "Ace", "2", "3", "4", "5", "6",
+               "7", "8", "9", "10", "Jack", "Queen", "King"};
+       String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
+       String s = ranks[this.rank] + " of " + suits[this.suit];
+       return s;
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Card threeOfClubs = new Card(3, 0);
+       System.out.println(threeOfClubs);
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.  
+
+%slr: end 1-11-20
 
 \begin{code}
 Card card = new Card(11, 1);
@@ -257,7 +291,12 @@ One advantage of defining \java{SUITS} and \java{RANKS} as class variables is th
 They may also be needed in other methods and classes, so it's helpful to make them available everywhere.
 Since the array variables are \java{final}, and the strings they reference are immutable, there is no danger in making them \java{public}.
 
-%slr:  1-3-20: Section exercise:  modify above trinket so that it has these public static final arrays 
+%slr: 1-11-20
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the the above trinket \java{Card}.  Add definitions for the class variables \java{RANKS} and \java{SUITS} at the very top of the \java{Card} class as shown above.  Also modify the \java{toString} method as shown.  Test your modified trinket to make sure it still works the same way as before.
+\end{enumerate}
+%slr: end 1-11-20
 
 \section{The compareTo Method}
 
@@ -328,7 +367,12 @@ It compares suits first.
 If the suits are the same, it compares ranks.
 If the ranks are also the same, it returns 0.
 
-%slr:  insert trinket.  implement code above with if-else and ask in a Section Exercise that they implement it as above
+%slr: 1-11-20
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Now make further modifications to those you made in the previous section to the \java{Card} class.  First add the \java{compareTo} \textbf{instance} method as shown immediately above.  Then modify the \java{main} method so as to declare two \java{Card} objects, compare them with your new method and report the results. (Call this instance method on an instance and pass another as a parameter as the method definition clearly indicates - for example \java{a.compateTo(b);}.
+\end{enumerate}
+%slr: end 1-11-20
 
 \section{Cards are Immutable}
 
@@ -371,6 +415,12 @@ You can initialize these these variables inside a constructor,
 but if someone writes a method that tries to modify them, they'll get a compiler error.
 This kind of safeguard helps prevent future mistakes and hours of debugging.
 
+%slr: 1-11-20
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Now make yet further modifications to those you made in the previous section exercises to the \java{Card} class.  Modify the declarations for the two instance variables to be \java{final}.  Then add getters.  Make sure the trinket will still compile and run.  Finally, demonstrate that your \java{Card} objects are in fact immutable by adding setters that try to modify the values.  What happens when you try to compile the program?
+\end{enumerate}
+%slr: end 1-11-20
 %slr:  insert trinket implementaton of above.  In Section Exercise ask that they demonstrate immutability by providing, say, a setter
 
 \section{Arrays of Cards}
@@ -490,6 +540,59 @@ public static void printDeck(Card[] cards) {
 Since \java{cards} has type \java{Card[]}, pronounced ``card array'', an element of \java{cards} has type \java{Card}.
 So \java{println} invokes the \java{toString} method in the \java{Card} class.
 
+%slr: 1-11-20: 
+Here is a trinket which builds an array of \java{Card} objects and prints them out:
+
+% height = 130 + 11 * num_lines
+\begin{trinket} [640] {Card.java}
+public class Card {
+    //class attributes
+    private int rank;
+    private int suit;
+    
+    //default constructor
+    public Card(int rank, int suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
+    
+    //toString() method
+    public String toString() {
+       String[] ranks = {null, "Ace", "2", "3", "4", "5", "6",
+               "7", "8", "9", "10", "Jack", "Queen", "King"};
+       String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
+       String s = ranks[this.rank] + " of " + suits[this.suit];
+       return s;
+    }
+    
+    //printDeck() method - *not* an instance method!
+    public static void printDeck(Card[] cards) {
+           for (Card card : cards) {
+              System.out.println(card);
+           }
+    }
+    
+    //main method
+    public static void main(String[] args) {
+       Card[] cards = new Card[52];  //array of 52 Card object *references*
+       //initialize deck
+       int index = 0;
+       for (int suit = 0; suit <= 3; suit++) {
+           for (int rank = 1; rank <= 13; rank++) {
+               cards[index] = new Card(rank, suit);
+               index++;
+           }
+       }
+       //print the deck using the *static* method printDeck
+       printDeck(cards);
+    }
+}
+\end{trinket}
+
+Run the trinket and observe the result.  
+
+%slr: end 1-11-20
+
 Then again, we don't have to write our own \java{printDeck} method.
 The \java{Arrays} class provides a \java{toString} method that invokes \java{toString} on the elements of an array and concatenates the results.
 
@@ -537,10 +640,17 @@ Sequential search is relatively inefficient, especially for large arrays.
 If you pay the price to keep the array sorted, finding elements becomes much easier.
 %We will learn in the next chapter how to sort arrays.
 
+%slr: 1-11-20
+\textbf{Section Exercises:}
+\begin{enumerate}
+\item Modify the version of the \java{Card} class as implemented in Section~\ref{cardarray}.  Add the static \java{search} method and test it.  (You may want to omit the call to \java{printDeck}).
+\end{enumerate}
+%slr: end 1-11-20
 
 \section{Binary Search}
 
 % ABD:  I wonder if we need a different example.  I don't know how many students have looked up a word in a paper dictionary.
+% slr 1-11-20:  I agree, but can't think of one right now.
 
 \index{binary search}
 
@@ -561,7 +671,7 @@ If you find it, stop.
 \end{enumerate}
 
 This algorithm is much faster than sequential search, because it rules out half of the remaining words each time you make a comparison.
-If at any point you find two adjacent words on the page, and your word comes between them, you can conclude that your word is not in the dictionary.
+If at any point you find two adjacent words on the page, and your word would be between them, you can conclude that your word is not in the dictionary.
 
 Getting back to the array of cards, we can write a faster version of \java{search} if we know the cards are in order:
 

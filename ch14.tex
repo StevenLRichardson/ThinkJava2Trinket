@@ -116,7 +116,7 @@ public Card popCard() {
 
 \begin{code}
 public boolean isEmpty() {
-    return cards.isEmpty()
+    return cards.isEmpty()  //ArrayList method isEmpty
 }
 \end{code}
 
@@ -142,7 +142,7 @@ public Card lastCard() {
 \index{modifier method}
 \index{method!modifier}
 
-In order to control the ways card collections are modified, we don't provide a wrapper for \java{set}.
+In order to control the ways card collections are modified, we don't provide a wrapper for the \java{ArrayList} method \java{set}.
 The only modifiers we provide are the two versions of \java{popCard} and the following version of \java{swapCards}:
 
 \begin{code}
@@ -199,11 +199,15 @@ public class Deck extends CardCollection {
 
 \index{extends}
 \index{superclass}
+\index{IS-A}
 
 The first line uses the keyword \java{extends} to indicate that \java{Deck} extends the class \java{CardCollection}.
 That means a \java{Deck} object has the same instance variables and methods as a \java{CardCollection}.
 Another way to say the same thing is that \java{Deck} ``inherits from'' \java{CardCollection}.
-We could also say that \java{CardCollection} is a {\bf superclass}, and \java{Deck} is one of its subclasses.
+We could also say that \java{CardCollection} is a {\bf superclass}, and \java{Deck} is one of its subclasses.  
+
+%slr: 1-19-20 added the folloswing paragraph:
+Importantly, this establishes the \textbf{is-a} relationship between \java{Deck} and \java{CardCollection}: \java{Deck} \textbf{is-a} \java{CardCollection}.  \java{Deck} adds more, so far a \java{Deck} constructor.
 
 % NOTE: Let's stick with ``superclass'' and ``subclass'' and
 % not use ``parent'' and ``child''.
@@ -259,13 +263,13 @@ public class Hand extends CardCollection {
 }
 \end{code}
 
-Like \java{Deck}, the \java{Hand} class extends \java{CardCollection}.
+Like \java{Deck}, the \java{Hand} class extends \java{CardCollection}.  Like \java{Deck}, \java{Hand} \textbf{is-a} \java{CardCollection}.
 So it inherits methods like \java{getLabel}, \java{size}, and \java{getCard}, which are used in \java{display}.
 \java{Hand} also provides a constructor, which invokes the constructor of \java{CardCollection}.
 %But in this case the only thing the new constructor does is invoke the constructor from the superclass, using \java{super}.
 
-In summary, a \java{Deck} is just like a \java{CardCollection}, but it provides a different constructor.
-And a \java{Hand} is just like a \java{CardCollection}, but it provides an additional method, \java{display}.
+In summary, a \java{Deck} is a \java{CardCollection}, but it provides a different constructor.
+And a \java{Hand} is a \java{CardCollection}, but it provides a different constructor and an additional method, \java{display}.
 
 % TODO: Call this print() rather than display()
 
@@ -341,16 +345,17 @@ deck.deal(hand, 5);
 The argument is a \java{Hand}, not a \java{CardCollection}.
 So why is this example legal?
 
-It's because \java{Hand} is a subclass of \java{CardCollection}, so a \java{Hand} object is also considered to be a \java{CardCollection} object.
+It's because \java{Hand} is a subclass of \java{CardCollection}, so a \java{Hand} object is also considered to be a \java{CardCollection} object.  This is the is-a relationship:  \java{Hand} is-a \java{CardCollection}.
 If a method expects a \java{CardCollection}, you can give it a \java{Hand}, a \java{Deck}, or a \java{CardCollection}.
 
 But it doesn't work the other way around: not every \java{CardCollection} is a \java{Hand}, so if a method expects a \java{Hand}, you have to give it a \java{Hand}, not a \java{CardCollection} or a \java{Deck}.
 
 If it seems strange that an object can belong to more than one type, remember that this happens in real life, too.
-Every cat is also a mammal, and every mammal is also an animal.
-But not every animal is a mammal, and not every mammal is a cat.
+Every cat is-a mammal, and every mammal is-a animal.
+But not every animal is-a mammal, and not every mammal is-a cat.
 
 %TODO Blythe suggests a diagram here
+%slr: 1-19-20 I agree
 
 
 \section{The Player Class}
@@ -377,7 +382,9 @@ public class Player {
     }
 \end{code}
 
-A \java{Player} has two \java{private} attributes: a name and a hand.
+\index{HAS-A}
+
+A \java{Player} has two \java{private} attributes: a name and a hand.  This is the \textbf{has-a} relationship and is \textbf{not} an example of class inheritance:  \java{Player} \textbf{has-a} \java{Hand}, but it is not true that \java{Player} \textbf{is-a} \java{Hand}.
 The constructor takes the player's name as a string and saves it in an instance variable.
 In this example, we have to use \java{this} to distinguish between the instance variable and the parameter with the same name.
 

@@ -267,9 +267,7 @@ public class Drawing extends Canvas {
         setBackground(Color.WHITE);
         list = new ArrayList<DrawablePolygon>();
     }
-\end{code}
 
-\begin{code}
     public void add(DrawablePolygon cp) {
         list.add(cp);
     }
@@ -310,9 +308,7 @@ public static void main(String[] args) {
     drawing.add(p1);
     drawing.add(p2);
     drawing.add(p3);
-\end{code}
 
-\begin{code}
     // set up the window frame
     JFrame frame = new JFrame("Drawing");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -322,13 +318,14 @@ public static void main(String[] args) {
 }
 \end{code}
 
+\label{fig:drawing}
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=4in]{figs/drawing.png}
 \caption{Initial drawing of three \java{RegularPolygon} objects.}
-\label{fig:drawing}
 \end{center}
 \end{figure}
+
 
 The first block of code creates \java{RegularPolygon} objects with 3, 6, and 360 sides.
 As you can see, a polygon with 360 sides is a pretty good approximation of a circle.
